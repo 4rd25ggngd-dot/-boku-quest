@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<title>僕クエスト Ver.2.7</title>
+<title>僕クエスト Ver.2.8</title>
 <style>
 :root{--fg:#fff;--dim:#aaa;--gold:#ffd34e;--green:#4fd17b;--red:#ff6262;--panel:#080808}
 *{box-sizing:border-box}
@@ -476,3 +476,47 @@ renderTitle();
 })();
 </script>
 </body></html>
+
+<style>
+/* Ver.2.8: iPad battle cleanup */
+.battleScene{
+  min-height:430px !important;
+  background-size:cover !important;
+  background-position:center 42% !important;
+}
+/* Hide the duplicate UI printed inside the background by cropping it */
+.battleScene::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:inherit;
+  background-size:165% auto !important;
+  background-position:center 43% !important;
+}
+.battleScene{background-image:none !important}
+.battleShade{z-index:1}
+.battleHud{z-index:3}
+@media (min-width:900px) and (orientation:landscape){
+  #battle.active{
+    grid-template-columns:1fr !important;
+    grid-template-areas:
+      "title"
+      "scene"
+      "stat"
+      "typing"
+      "log"
+      "notice"
+      "help" !important;
+  }
+  #battle .battleScene{min-height:430px !important}
+  #battle .typingBox{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    padding:10px 16px;
+  }
+  #battle .typingRow{padding:4px 0}
+  #battle .typingValue{font-size:30px}
+}
+</style>

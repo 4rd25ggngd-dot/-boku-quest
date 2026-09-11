@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>僕クエスト Ver.2.3</title>
+<style>
+:root{--fg:#fff;--dim:#aaa;--gold:#ffd34e}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#000;color:var(--fg);font-family:ui-monospace,"SFMono-Regular","Hiragino Kaku Gothic ProN",monospace}
+body{min-height:100vh;display:grid;place-items:center;padding:18px}
+#game{width:min(100%,1100px);min-height:700px;border:4px solid #fff;padding:22px;position:relative;background:#000;box-shadow:0 0 0 4px #222}
+.screen{display:none}.screen.active{display:block}
+h1{font-size:clamp(42px,8vw,92px);text-align:center;letter-spacing:.12em;margin:90px 0 50px;text-shadow:5px 5px #555}
+.subtitle{text-align:center;color:var(--gold);margin-top:-35px;margin-bottom:45px}
+.menu{width:min(680px,95%);margin:auto;border:3px solid #fff;padding:18px 26px;font-size:clamp(19px,3vw,30px)}
+.menu div{padding:14px 8px}.menu .sel:before{content:"▶ ";color:var(--gold)}
+.key{float:right;color:var(--gold)}
+.help{text-align:center;color:var(--dim);margin:24px 0 0;font-size:14px}
+.panel{border:3px solid #fff;padding:20px;margin:14px 0}
+.row{display:flex;gap:14px;flex-wrap:wrap}.card{border:2px solid #fff;padding:18px;flex:1 1 200px;min-height:150px}.card.sel{outline:4px solid var(--gold)}
+button,input{font:inherit}input{width:100%;padding:14px;background:#111;border:2px solid #fff;color:#fff;font-size:22px}
+button{background:#000;color:#fff;border:2px solid #fff;padding:12px 18px}
+.map{font-size:clamp(18px,3vw,30px);line-height:1.8;white-space:pre-wrap;text-align:center}
+.enemy{text-align:center;font-size:70px;margin:18px}.hpbar{height:22px;border:2px solid #fff}.hpfill{height:100%;background:#fff;width:100%}
+.prompt{font-size:clamp(20px,3vw,32px);padding:18px;border:2px solid #fff;margin:16px 0;min-height:75px}
+#battleInput{font-size:25px}
+.log{min-height:70px;color:var(--gold);padding-top:12px}
+.small{font-size:14px;color:#bbb}.stat{display:flex;justify-content:space-between;gap:20px}
+.badge{color:var(--gold)}
+@media(max-width:700px){#game{min-height:620px;padding:14px}h1{margin-top:55px}.menu{padding:12px}}
+</style>
+</head>
+<body>
+<main id="game" tabindex="0" aria-label="僕クエスト">
+<section id="title" class="screen active">
+  <h1>僕クエスト</h1>
+  <div class="subtitle">― ことばを取り戻す冒険 ―</div>
+  <div class="menu" id="titleMenu">
+    <div class="sel" data-action="new">ぼうけんを はじめる <span class="key">[N]</span></div>
+    <div data-action="continue">つづきから <span class="key">[C]</span></div>
+    <div data-action="practice">れんしゅう <span class="key">[P]</span></div>
+  </div>
+  <p class="help">N / C / P で直接選択　｜　↑↓ + Enter でも操作できます</p>
+</section>
+
+<section id="create" class="screen">
+ <h2>あたらしい ぼうけん</h2>
+ <div class="panel"><p>なまえを入力してください。</p><input id="nameInput" maxlength="10" placeholder="ぼく"><p class="small">入力後 Enter で職業選択へ / Escで戻る</p></div>
+</section>
+
+<section id="jobs" class="screen">
+ <h2>しょくぎょうを えらぶ</h2>
+ <div class="row" id="jobCards">
+  <div class="card sel"><h3>1. 戦士</h3><p>HPと防御が高い。ミスの反撃に強い。</p></div>
+  <div class="card"><h3>2. 魔法使い</h3><p>連続正解で魔力上昇。必殺技が強い。</p></div>
+  <div class="card"><h3>3. 盗賊</h3><p>速く正確に打つほど会心が出やすい。</p></div>
+  <div class="card"><h3>4. 勇者</h3><p>攻守のバランス型。初心者にも扱いやすい。</p></div>
+ </div>
+ <p class="help">1〜4で直接選択 / ←→で選択 / Enterで決定 / B・Escで戻る</p>
+</section>
+
+<section id="story" class="screen">
+ <h2>プロローグ</h2>
+ <div class="panel" id="storyText"></div>
+ <p class="help">Enter または N で冒険へ</p>
+</section>
+
+<section id="map" class="screen">
+ <h2>ワールドマップ</h2>
+ <div class="panel stat"><span id="heroStat"></span><span id="levelStat"></span></div>
+ <div class="map">　　　🏰 ことばの城
+　　　　　│
+　　🌲 ささやきの森　← 最初の目的地
+　　　　　│
+　　　🏠 はじまりの村
+　　　　　│
+　　　📚 記憶の図書館</div>
+ <div class="panel">魔物に奪われた「ことば」を取り戻そう。<br><span class="badge">[F]</span> ささやきの森へ　　<span class="badge">[S]</span> セーブ　　<span class="badge">[B]</span> タイトル</div>
+</section>
+
+<section id="battle" class="screen">
+ <h2>ささやきの森</h2>
+ <div class="panel stat"><span id="battleHero"></span><span id="combo"></span></div>
+ <div class="enemy">👾</div>
+ <div>コトバケ HP <span id="enemyHpText"></span></div><div class="hpbar"><div id="enemyHp" class="hpfill"></div></div>
+ <div class="prompt" id="prompt"></div>
+ <input id="battleInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ここに文章を入力">
+ <div class="log" id="log">正しく入力して Enter！</div>
+ <p class="help">Enter＝攻撃　｜　必殺ゲージ解放後 Space＝必殺技　｜　Esc＝マップ</p>
+</section>
+
+<section id="practice" class="screen">
+ <h2>れんしゅう</h2>
+ <div class="panel"><p>ホームポジション</p><div class="prompt">asdf jkl;</div><input id="practiceInput" placeholder="asdf jkl;"><div id="practiceLog" class="log"></div></div>
+ <p class="help">正しく入力して Enter / B・Escでタイトルへ</p>
+</section>
+</main>
+<script>
+(()=> {
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const screens=$$('.screen');
+const state={name:'ぼく',job:'勇者',level:1,xp:0,maxHp:30,hp:30,enemyMax:34,enemyHp:34,combo:0,titleIndex:0,jobIndex:0};
+const prompts=['おはよう きょうも げんきに','ことばは こころを つなぐ','ありがとうを つたえよう','もりに ひかりが もどってきた','ぶんかは ことばから うまれる'];
+let promptIndex=0;
+function show(id){screens.forEach(x=>x.classList.remove('active'));$('#'+id).classList.add('active');window.scrollTo(0,0);$('#game').focus({preventScroll:true});}
+function renderTitle(){ $$('#titleMenu div').forEach((e,i)=>e.classList.toggle('sel',i===state.titleIndex));}
+function titleAction(a){if(a==='new'){show('create');setTimeout(()=>$('#nameInput').focus(),50)}else if(a==='continue'){load()}else show('practice');}
+function renderJobs(){ $$('#jobCards .card').forEach((e,i)=>e.classList.toggle('sel',i===state.jobIndex));}
+function selectJob(i){state.jobIndex=i;renderJobs();}
+function confirmJob(){state.job=['戦士','魔法使い','盗賊','勇者'][state.jobIndex]; setupStats(); $('#storyText').innerHTML=`かつて世界には、数えきれないほどの「ことば」があった。<br><br>しかし〈忘却の魔王〉は、人々からことばを奪った。<br>本は白くなり、歌は消え、町の人々は文化さえ忘れ始めた。<br><br>ただ一人、<b>${state.name}</b>には、ことばを正しく打つことでその力を取り戻す能力があった。<br><br>「僕のことばで、世界を取り戻す。」`;show('story');}
+function setupStats(){const bonus={戦士:[38,5],魔法使い:[27,8],盗賊:[30,7],勇者:[33,6]}[state.job];state.maxHp=bonus[0]+(state.level-1)*5;state.hp=state.maxHp;}
+function updateMap(){ $('#heroStat').textContent=`${state.name} / ${state.job}`;$('#levelStat').textContent=`Lv.${state.level}  XP ${state.xp}/30`; }
+function startMap(){updateMap();show('map');}
+function startBattle(){state.enemyMax=Math.max(16,36-state.level*2);state.enemyHp=state.enemyMax;state.combo=0;promptIndex=0;updateBattle();show('battle');setTimeout(()=>$('#battleInput').focus(),50);}
+function updateBattle(){ $('#battleHero').textContent=`${state.name} Lv.${state.level} HP ${state.hp}/${state.maxHp}`;$('#combo').textContent=`COMBO ${state.combo} ${state.combo>=Math.max(3,5-Math.floor(state.level/5))?'★必殺OK':''}`;$('#enemyHpText').textContent=`${state.enemyHp}/${state.enemyMax}`;$('#enemyHp').style.width=(100*state.enemyHp/state.enemyMax)+'%';$('#prompt').textContent=prompts[promptIndex%prompts.length];}
+function attack(){const inp=$('#battleInput');if(!inp.value)return; if(inp.value.trim()===$('#prompt').textContent){state.combo++;let dmg=6+state.level*2+(state.job==='魔法使い'?state.combo:0);state.enemyHp=Math.max(0,state.enemyHp-dmg);$('#log').textContent=`せいこう！ ${dmg} ダメージ！`;promptIndex++;}else{state.combo=0;let dmg=Math.max(1,8-Math.floor(state.level/2)-(state.job==='戦士'?2:0));state.hp=Math.max(0,state.hp-dmg);$('#log').textContent=`ミス！ コトバケの反撃 ${dmg} ダメージ。`;} inp.value=''; if(state.enemyHp<=0){win();return} if(state.hp<=0){$('#log').textContent='力つきた…。レベルはそのまま。Enterでマップへ。';setTimeout(()=>{setupStats();startMap()},1100);return} updateBattle();}
+function special(){let need=Math.max(3,5-Math.floor(state.level/5));if(state.combo<need)return;let dmg=18+state.level*3;state.enemyHp=Math.max(0,state.enemyHp-dmg);state.combo=0;$('#log').textContent=`必殺！「ことばの閃光」！ ${dmg} ダメージ！`;if(state.enemyHp<=0){win();return}updateBattle();}
+function win(){state.xp+=15;let msg='コトバケを倒した！ 失われたことばが一つ戻った。';if(state.xp>=30){state.xp-=30;state.level++;setupStats();msg+=` レベルが ${state.level} に上がった！ 敵が少し攻略しやすくなった。`;}save();$('#log').textContent=msg;setTimeout(startMap,1600);}
+function save(){localStorage.setItem('bokuQuest23',JSON.stringify(state));}
+function load(){let d=localStorage.getItem('bokuQuest23');if(!d){alert('まだ冒険の記録がありません。');return}Object.assign(state,JSON.parse(d));setupStats();startMap();}
+document.addEventListener('keydown',e=>{
+ const id=$('.screen.active').id; const k=e.key.toLowerCase();
+ if(id==='title'){if(k==='n')titleAction('new');else if(k==='c')titleAction('continue');else if(k==='p')titleAction('practice');else if(e.key==='ArrowDown'){state.titleIndex=(state.titleIndex+1)%3;renderTitle();e.preventDefault()}else if(e.key==='ArrowUp'){state.titleIndex=(state.titleIndex+2)%3;renderTitle();e.preventDefault()}else if(e.key==='Enter')titleAction(['new','continue','practice'][state.titleIndex]);}
+ else if(id==='create'){if(e.key==='Enter'){state.name=$('#nameInput').value.trim()||'ぼく';show('jobs')}else if(e.key==='Escape')show('title');}
+ else if(id==='jobs'){if('1234'.includes(e.key)){selectJob(+e.key-1);confirmJob()}else if(e.key==='ArrowRight'||e.key==='ArrowDown'){selectJob((state.jobIndex+1)%4);e.preventDefault()}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){selectJob((state.jobIndex+3)%4);e.preventDefault()}else if(e.key==='Enter')confirmJob();else if(k==='b'||e.key==='Escape')show('create');}
+ else if(id==='story'){if(e.key==='Enter'||k==='n')startMap();}
+ else if(id==='map'){if(k==='f')startBattle();else if(k==='s'){save();alert('冒険の記録を保存しました。')}else if(k==='b'||e.key==='Escape')show('title');}
+ else if(id==='battle'){if(e.key==='Enter'){e.preventDefault();attack()}else if(e.code==='Space'&&document.activeElement!==$('#battleInput')){e.preventDefault();special()}else if(e.key==='Escape')startMap();}
+ else if(id==='practice'){if(e.key==='Enter'){let ok=$('#practiceInput').value.trim()==='asdf jkl;';$('#practiceLog').textContent=ok?'PERFECT！ ホームポジション成功！':'もう一度。FとJの位置を意識しよう。';$('#practiceInput').value='';}else if(k==='b'||e.key==='Escape')show('title');}
+});
+$('#titleMenu').addEventListener('click',e=>{let d=e.target.closest('[data-action]');if(d)titleAction(d.dataset.action)});
+$('#jobCards').addEventListener('click',e=>{let c=e.target.closest('.card');if(c){selectJob($$('#jobCards .card').indexOf(c));confirmJob()}});
+$('#game').addEventListener('pointerdown',()=>$('#game').focus());
+renderTitle();
+})();
+</script>
+</body></html>

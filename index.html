@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="ぼくクエスト">
 <meta name="theme-color" content="#000000">
-<title>ぼくクエスト Ver.3.10.0</title>
+<title>ぼくクエスト Ver.3.10.1</title>
 <style>
 :root{--fg:#fff;--dim:#aaa;--gold:#ffd34e;--green:#44cf77;--red:#ff5757;--blue:#62a8ff;--panel:#050505}
 *{box-sizing:border-box}
@@ -99,7 +99,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 .audioState{font-size:11px;color:#9ad;margin-left:6px}
 
 
-/* Ver.3.10.0 release: expanded monster roster, unified sprite presentation, stage-word progression */
+/* Ver.3.10.1 release: expanded monster roster, unified sprite presentation, stage-word progression */
 .battleMessage{
  position:absolute;z-index:30;left:4%;right:4%;bottom:3%;
  background:rgba(0,0,0,.86);border:3px solid #fff;padding:10px 14px;
@@ -199,7 +199,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 }
 
 
-/* Ver.3.10.0 battle hero positioning + animated job preview */
+/* Ver.3.10.1 battle hero positioning + animated job preview */
 .heroToken.heroSprite{
   bottom:17%!important;
 }
@@ -215,6 +215,32 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
   transform-origin:50% 100%;
 }
 
+
+/* Ver.3.10.1 hero motion tuning */
+#heroToken.heroMotion-hurt,
+#heroToken.heroMotion-victory,
+#heroToken.heroMotion-down{
+  width:min(36%,345px)!important;
+  height:68%!important;
+}
+#heroToken.heroMotion-idle,
+#heroToken.heroMotion-attack,
+#heroToken.heroMotion-special{
+  width:min(32%,305px)!important;
+  height:61%!important;
+}
+/* keep the hero above the battle message */
+#heroToken.heroSprite{bottom:17%!important}
+
+/* hero job-select preview: use the 4-frame idle animation at a readable size */
+.heroJobCard .jobPortrait{height:160px!important}
+#heroJobPortrait{
+  width:155px!important;
+  height:155px!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+}
+
 </style>
 </head>
 <body>
@@ -224,7 +250,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 <section id="title" class="screen active">
   <div class="titleWrap"><div class="titleCard">
     <h1>ぼくクエスト</h1>
-    <div class="subtitle">― ことばを とりもどす ぼうけん ― <small>Ver.3.10.0</small></div>
+    <div class="subtitle">― ことばを とりもどす ぼうけん ― <small>Ver.3.10.1</small></div>
     <div class="menu" id="titleMenu">
       <div class="sel" data-action="new">ぼうけんを はじめる <span class="key">[N]</span></div>
       <div data-action="continue">つづきから <span class="key">[C]</span></div>
@@ -525,13 +551,13 @@ function warriorVictory(){if(warriorIsActive())playWarriorMotion('victory',{loop
 let heroAnimTimer=null,heroAnimToken=0;
 function stopHeroAnim(){if(heroAnimTimer){clearTimeout(heroAnimTimer);heroAnimTimer=null}heroAnimToken++}
 function heroIsActive(){return state.job==='ゆうしゃ' && $('#heroToken')}
-function playHeroMotion(name,{loop=false,fps=9,onDone=null}={}){if(!heroIsActive()||!HERO_MOTIONS[name]){if(onDone)onDone();return}stopHeroAnim();const token=heroAnimToken,frames=HERO_MOTIONS[name];let i=0;const tick=()=>{if(token!==heroAnimToken)return;$('#heroToken').src=frames[i++];if(i>=frames.length){if(loop)i=0;else{heroAnimTimer=null;if(onDone)onDone();return}}heroAnimTimer=setTimeout(tick,1000/fps)};tick()}
+function playHeroMotion(name,{loop=false,fps=9,onDone=null}={}){if(!heroIsActive()||!HERO_MOTIONS[name]){if(onDone)onDone();return}stopHeroAnim();const el=$('#heroToken');el.classList.remove('heroMotion-idle','heroMotion-attack','heroMotion-hurt','heroMotion-victory','heroMotion-down','heroMotion-special');el.classList.add('heroMotion-'+name);const token=heroAnimToken,frames=HERO_MOTIONS[name];let i=0;const tick=()=>{if(token!==heroAnimToken)return;el.src=frames[i++];if(i>=frames.length){if(loop)i=0;else{heroAnimTimer=null;if(onDone)onDone();return}}heroAnimTimer=setTimeout(tick,1000/fps)};tick()}
 function heroIdleMotion(){if(heroIsActive())playHeroMotion('idle',{loop:true,fps:5})}
 function heroAttackMotion(){if(heroIsActive())playHeroMotion('attack',{fps:11,onDone:heroIdleMotion})}
 function heroHurtMotion(){if(heroIsActive())playHeroMotion('hurt',{fps:9,onDone:heroIdleMotion})}
 function heroDownMotion(){if(heroIsActive())playHeroMotion('down',{fps:6})}
-function heroVictoryMotion(){if(heroIsActive())playHeroMotion('victory',{loop:true,fps:5})}
-function heroSpecialMotion(){if(heroIsActive())playHeroMotion('special',{fps:10,onDone:heroIdleMotion})}
+function heroVictoryMotion(){if(heroIsActive())playHeroMotion('victory',{loop:false,fps:6})}
+function heroSpecialMotion(){if(heroIsActive())playHeroMotion('special',{fps:9,onDone:heroIdleMotion})}
 
 
 let warriorJobPreviewTimer=null;

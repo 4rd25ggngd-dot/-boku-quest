@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="ぼくクエスト">
 <meta name="theme-color" content="#000000">
-<title>ぼくクエスト Ver.3.8</title>
+<title>ぼくクエスト Ver.3.8.1.1</title>
 <style>
 :root{--fg:#fff;--dim:#aaa;--gold:#ffd34e;--green:#44cf77;--red:#ff5757;--blue:#62a8ff;--panel:#050505}
 *{box-sizing:border-box}
@@ -75,7 +75,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 @media(max-width:900px){.worldWrap,.dexWrap{grid-template-columns:1fr}.mapVisual{min-height:480px}.battleScene{height:420px}.dexGrid{grid-template-columns:repeat(3,1fr)}}
 @media(display-mode:standalone){body{padding:0}#game{min-height:100dvh;border-width:2px}}
 
-/* Ver.3.8 independent sprite/background layers */
+/* Ver.3.8.1 independent sprite/background layers */
 .heroToken.heroSprite{
   position:absolute;z-index:7;left:5%;bottom:5%;
   width:min(27%,250px);height:52%;object-fit:contain;object-position:left bottom;
@@ -107,7 +107,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 <section id="title" class="screen active">
   <div class="titleWrap"><div class="titleCard">
     <h1>ぼくクエスト</h1>
-    <div class="subtitle">― ことばを とりもどす ぼうけん ― <small>Ver.3.8</small></div>
+    <div class="subtitle">― ことばを とりもどす ぼうけん ― <small>Ver.3.8.1</small></div>
     <div class="menu" id="titleMenu">
       <div class="sel" data-action="new">ぼうけんを はじめる <span class="key">[N]</span></div>
       <div data-action="continue">つづきから <span class="key">[C]</span></div>
@@ -380,7 +380,7 @@ function maybeComplete38(){
  }
  return true;
 }
-</span><span class="cursor"></span><span class="typedRest">${rest}</span>`}
+
 function specialNeed(){return 100}
 function updateBattle(){const st=stageInfo();$('#battleHero').textContent=`${state.name} / ${state.job} / Lv.${state.level}`;$('#combo').textContent=`COMBO ${state.combo}`;$('#heroHpText').textContent=`${state.hp}/${state.maxHp}`;$('#enemyHpText').textContent=`${state.enemyHp}/${state.enemyMax}`;$('#heroHp').style.width=(100*state.hp/state.maxHp)+'%';$('#enemyHp').style.width=(100*state.enemyHp/state.enemyMax)+'%';$('#promptKana').textContent=currentWord();paintTyped();$('#spFill').style.width=state.special+'%';const ready=state.special>=100;$('#specialBtn').classList.toggle('specialReady',ready);$('#specialBtn').textContent=ready?'★ Space：ひっさつ OK！':'Space：ひっさつ'}
 function playerAttackEffect(dmg){retrigger($('#heroToken'),'heroAttack',500);retrigger($('#enemyPortrait'),'enemyDamage',460);retrigger($('#battleScene'),'sceneShake',380);$('#enemyDamage').textContent=dmg;retrigger($('#enemyDamage'),'show',700);sfx('hit')}

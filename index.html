@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="ぼくクエスト">
 <meta name="theme-color" content="#000000">
-<title>ぼくクエスト Ver.3.10.7</title>
+<title>ぼくクエスト Ver.3.10.8</title>
 <style>
 :root{--fg:#fff;--dim:#aaa;--gold:#ffd34e;--green:#44cf77;--red:#ff5757;--blue:#62a8ff;--panel:#050505}
 *{box-sizing:border-box}
@@ -99,7 +99,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 .audioState{font-size:11px;color:#9ad;margin-left:6px}
 
 
-/* Ver.3.10.7 release: expanded monster roster, unified sprite presentation, stage-word progression */
+/* Ver.3.10.8 release: expanded monster roster, unified sprite presentation, stage-word progression */
 .battleMessage{
  position:absolute;z-index:30;left:4%;right:4%;bottom:3%;
  background:rgba(0,0,0,.86);border:3px solid #fff;padding:10px 14px;
@@ -199,7 +199,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 }
 
 
-/* Ver.3.10.7 battle hero positioning + animated job preview */
+/* Ver.3.10.8 battle hero positioning + animated job preview */
 .heroToken.heroSprite{
   bottom:17%!important;
 }
@@ -216,7 +216,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 }
 
 
-/* Ver.3.10.7 hero motion size normalization: idle-size baseline */
+/* Ver.3.10.8 hero motion size normalization: idle-size baseline */
 #heroToken.heroMotion-idle,
 #heroToken.heroMotion-attack,
 #heroToken.heroMotion-hurt,
@@ -241,7 +241,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 }
 
 
-/* Ver.3.10.7 two-level map */
+/* Ver.3.10.8 two-level map */
 .worldOnly,.detailMapWrap{display:block}
 .worldMapVisual{width:100%;min-height:640px}
 .detailMapVisual{width:100%;min-height:540px}
@@ -257,7 +257,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 @media(max-width:900px){.worldMapVisual{min-height:500px}.detailMapVisual{min-height:430px}}
 
 
-/* Ver.3.10.7 battle UI compact */
+/* Ver.3.10.8 battle UI compact */
 #battle .statusPanel{padding:10px 14px}
 #battle .statusTitle{display:flex;align-items:center;justify-content:space-between;gap:12px}
 #heroHpText::before,#enemyHpText::before{content:"HP ";font-size:.82em;opacity:.9}
@@ -285,6 +285,117 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 #battle .romanTip,
 #battle .lessonTip{display:none!important}
 
+
+/* Ver.3.10.8 battle HUD refinement */
+#battle .battleScene{min-height:56vh!important}
+#battle .battleHud{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:12px!important;
+}
+#battle .mini{padding:10px 12px!important}
+#battle .hudTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:7px;
+  font-weight:800;
+}
+#battle .hudNumber{white-space:nowrap}
+#battle #heroHpText::before,
+#battle #enemyHpText::before{content:none!important}
+
+#battle .gaugeRow{
+  display:grid;
+  grid-template-columns:92px minmax(0,1fr);
+  align-items:center;
+  gap:8px;
+  margin-top:6px;
+}
+#battle .gaugeLabel{
+  font-size:14px;
+  font-weight:800;
+  white-space:nowrap;
+  text-align:right;
+}
+#battle .hpbar,
+#battle .spbar{
+  width:100%!important;
+  height:20px!important;
+  margin:0!important;
+  box-sizing:border-box;
+}
+#battle .spbar{
+  border:2px solid #fff;
+  background:#111;
+}
+#battle .spfill{height:100%!important}
+
+#battle .comboOverlay{
+  position:absolute;
+  z-index:35;
+  top:20%;
+  right:3%;
+  border:2px solid rgba(255,255,255,.85);
+  background:rgba(0,0,0,.68);
+  padding:4px 10px;
+  font-size:14px;
+  min-width:0;
+}
+#battle .comboOverlay:empty{display:none}
+
+#battle .compactTyping{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:8px!important;
+  min-height:0!important;
+  padding:12px 16px!important;
+  margin-top:8px!important;
+}
+#battle .typingRow{
+  display:grid;
+  grid-template-columns:110px minmax(0,1fr);
+  align-items:center;
+  gap:14px;
+}
+#battle .typingRow .typingLabel{
+  margin:0!important;
+  color:#aaa;
+  font-size:14px;
+  font-weight:800;
+}
+#battle .typingRow .typingValue{
+  font-size:clamp(24px,3vw,40px)!important;
+  line-height:1.15;
+  min-height:1.2em;
+}
+#battle .hiddenCompat{display:none!important}
+#battle .compactSpecialBtn{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+  width:1px;height:1px;
+  overflow:hidden;
+}
+#battle .compactHelp{
+  margin:6px 0 0!important;
+  font-size:12px!important;
+}
+#battle .notice,
+#battle .statline,
+#battle .specialWrap,
+#battle .log{display:none!important}
+
+@media(max-width:900px){
+  #battle .battleHud{gap:8px!important}
+  #battle .mini{padding:8px 9px!important}
+  #battle .gaugeRow{grid-template-columns:78px minmax(0,1fr);gap:6px}
+  #battle .gaugeLabel{font-size:12px}
+  #battle .typingRow{grid-template-columns:88px minmax(0,1fr);gap:10px}
+  #battle .battleScene{min-height:58vh!important}
+}
+
 </style>
 </head>
 <body>
@@ -294,7 +405,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 <section id="title" class="screen active">
   <div class="titleWrap"><div class="titleCard">
     <h1>ぼくクエスト</h1>
-    <div class="subtitle">― ことばを とりもどす ぼうけん ― <small>Ver.3.10.7</small></div>
+    <div class="subtitle">― ことばを とりもどす ぼうけん ― <small>Ver.3.10.8</small></div>
     <div class="menu" id="titleMenu">
       <div class="sel" data-action="new">ぼうけんを はじめる <span class="key">[N]</span></div>
       <div data-action="continue">つづきから <span class="key">[C]</span></div>
@@ -363,35 +474,67 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 </section>
 
 
+
 <section id="battle" class="screen">
   <h2 id="battleStageTitle"></h2>
   <div class="battleScene" id="battleScene">
     <div class="battleShade"></div>
+
     <div class="battleHud">
-      <div class="mini"><div class="hplabel"><span id="heroHpName"></span><span id="heroHpText"></span></div><div class="hpbar"><div id="heroHp" class="hpfill"></div></div></div>
-      <div class="mini"><div class="hplabel"><span id="enemyHpName"></span><span id="enemyHpText"></span></div><div class="hpbar"><div id="enemyHp" class="hpfill enemyfill"></div></div></div>
+      <div class="mini heroHud">
+        <div class="hudTop">
+          <span id="heroHpName"></span>
+          <span id="heroHpText" class="hudNumber"></span>
+        </div>
+        <div class="gaugeRow">
+          <span class="gaugeLabel">たいりょく：</span>
+          <div class="hpbar"><div id="heroHp" class="hpfill"></div></div>
+        </div>
+        <div class="gaugeRow">
+          <span class="gaugeLabel">ひっさつ：</span>
+          <div class="spbar"><div id="spFill" class="spfill"></div></div>
+        </div>
+      </div>
+
+      <div class="mini enemyHud">
+        <div class="hudTop">
+          <span id="enemyHpName"></span>
+          <span id="enemyHpText" class="hudNumber"></span>
+        </div>
+        <div class="gaugeRow">
+          <span class="gaugeLabel">たいりょく：</span>
+          <div class="hpbar"><div id="enemyHp" class="hpfill enemyfill"></div></div>
+        </div>
+      </div>
     </div>
+
+    <div id="combo" class="comboOverlay"></div>
+
     <img id="heroToken" class="heroToken heroSprite" alt="しゅじんこう">
     <img id="enemyPortrait" alt="てき">
     <div id="heroDamage" class="damage heroD"></div>
     <div id="enemyDamage" class="damage enemyD"></div>
     <div id="battleMessage" class="battleMessage"></div>
   </div>
-  <div class="statline comboOnly"><span></span><span id="combo"></span></div>
-  <div class="specialWrap">
-    <div class="specialTitle">ひっさつゲージ</div>
-    <div class="spbar"><div id="spFill" class="spfill"></div></div>
-    <button id="specialBtn" class="specialBtn">Space：ひっさつ</button>
+
+  <div class="typingBox compactTyping" id="battleTypingBox">
+    <div class="typingRow">
+      <div class="typingLabel">ひらがな</div>
+      <div id="promptKana" class="typingValue"></div>
+    </div>
+    <div class="typingRow">
+      <div class="typingLabel">入力補助</div>
+      <div id="typedBattle" class="typingValue"></div>
+    </div>
+    <div id="romajiOptions" class="hiddenCompat"></div>
   </div>
-  <div class="typingBox" id="battleTypingBox">
-    <div><div class="typingLabel">にゅうりょくする ことば</div><div id="promptKana" class="typingValue"></div></div>
-    <div><div class="typingLabel">あなたの にゅうりょく</div><div id="typedBattle" class="typingValue"></div><div id="romajiOptions"></div></div>
-  </div>
+
   <input id="battleInput" class="hiddenInput" autocomplete="off" autocapitalize="none" spellcheck="false">
-  <div id="log" class="log"></div>
-  <div class="notice">ち / し / つ / ふ / ん などは、ふくすうの ローマじ にゅうりょくに たいおうします。</div>
-  <p class="help">Space：ひっさつ　Backspace：1もじ もどす　Esc：マップ</p>
+  <div id="log" class="hiddenCompat"></div>
+  <button id="specialBtn" class="specialBtn compactSpecialBtn">Space：ひっさつ</button>
+  <p class="help compactHelp">Space：ひっさつ　Backspace：1もじ もどす／入力なしでマップ</p>
 </section>
+
 
 <section id="practice" class="screen">
   <h2>れんしゅう</h2>

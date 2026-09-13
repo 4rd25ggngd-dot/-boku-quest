@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="ぼくクエスト">
 <meta name="theme-color" content="#000000">
-<title>ぼくクエスト Ver.3.10.6</title>
+<title>ぼくクエスト Ver.3.10.7</title>
 <style>
 :root{--fg:#fff;--dim:#aaa;--gold:#ffd34e;--green:#44cf77;--red:#ff5757;--blue:#62a8ff;--panel:#050505}
 *{box-sizing:border-box}
@@ -99,7 +99,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 .audioState{font-size:11px;color:#9ad;margin-left:6px}
 
 
-/* Ver.3.10.6 release: expanded monster roster, unified sprite presentation, stage-word progression */
+/* Ver.3.10.7 release: expanded monster roster, unified sprite presentation, stage-word progression */
 .battleMessage{
  position:absolute;z-index:30;left:4%;right:4%;bottom:3%;
  background:rgba(0,0,0,.86);border:3px solid #fff;padding:10px 14px;
@@ -199,7 +199,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 }
 
 
-/* Ver.3.10.6 battle hero positioning + animated job preview */
+/* Ver.3.10.7 battle hero positioning + animated job preview */
 .heroToken.heroSprite{
   bottom:17%!important;
 }
@@ -216,7 +216,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 }
 
 
-/* Ver.3.10.6 hero motion size normalization: idle-size baseline */
+/* Ver.3.10.7 hero motion size normalization: idle-size baseline */
 #heroToken.heroMotion-idle,
 #heroToken.heroMotion-attack,
 #heroToken.heroMotion-hurt,
@@ -241,7 +241,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 }
 
 
-/* Ver.3.10.6 two-level map */
+/* Ver.3.10.7 two-level map */
 .worldOnly,.detailMapWrap{display:block}
 .worldMapVisual{width:100%;min-height:640px}
 .detailMapVisual{width:100%;min-height:540px}
@@ -256,6 +256,35 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 .stagePoint.selected{width:28px;height:28px;box-shadow:0 0 0 3px #000,0 0 14px #ffd43b}
 @media(max-width:900px){.worldMapVisual{min-height:500px}.detailMapVisual{min-height:430px}}
 
+
+/* Ver.3.10.7 battle UI compact */
+#battle .statusPanel{padding:10px 14px}
+#battle .statusTitle{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#heroHpText::before,#enemyHpText::before{content:"HP ";font-size:.82em;opacity:.9}
+#battle .statusPanel > div:not(.statusTitle):has(+ .hpBar){display:none}
+#battle .heroMiniSpecial{margin-top:7px}
+#battle .heroMiniSpecial .specialRow{
+  display:grid!important;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
+  margin:0!important;padding:0!important;border:0!important;min-height:0!important
+}
+#battle .heroMiniSpecial .specialRow>*{margin:0!important}
+#battle .heroMiniSpecial .specialRow .specialLabel{white-space:nowrap}
+#battle .heroMiniSpecial .specialRow button{padding:5px 10px!important}
+#battle .battleScene{min-height:52vh}
+#battle .typingArea{padding:12px 16px!important}
+#battle .typingArea .kana{font-size:clamp(28px,4vw,48px)!important}
+#battle .typingArea .romaji{font-size:clamp(25px,3.2vw,42px)!important}
+#battle .typingArea .hint,
+#battle .typingArea .alt,
+#battle #romajiHint,
+#battle #inputHint,
+#battle .inputHint{display:none!important}
+#battle #battleLog,
+#battle .battleLog,
+#battle .typingTip,
+#battle .romanTip,
+#battle .lessonTip{display:none!important}
+
 </style>
 </head>
 <body>
@@ -265,7 +294,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 <section id="title" class="screen active">
   <div class="titleWrap"><div class="titleCard">
     <h1>ぼくクエスト</h1>
-    <div class="subtitle">― ことばを とりもどす ぼうけん ― <small>Ver.3.10.6</small></div>
+    <div class="subtitle">― ことばを とりもどす ぼうけん ― <small>Ver.3.10.7</small></div>
     <div class="menu" id="titleMenu">
       <div class="sel" data-action="new">ぼうけんを はじめる <span class="key">[N]</span></div>
       <div data-action="continue">つづきから <span class="key">[C]</span></div>
@@ -791,6 +820,18 @@ updateSoundButton();renderTitle();
 
 $('#detailStageList')?.addEventListener('click',e=>{const it=e.target.closest('[data-stage]');if(!it)return;const n=+it.dataset.stage;if(n<=state.stage){state.selectedStage=n;renderStageMap()}});
 $('#detailStagePoints')?.addEventListener('click',e=>{const it=e.target.closest('[data-stage]');if(!it)return;const n=+it.dataset.stage;if(n<=state.stage){state.selectedStage=n;renderStageMap()}});
+
+function compactBattleUi(){
+  document.querySelectorAll('#battle *').forEach(el=>{
+    const t=(el.textContent||'').trim();
+    if(t.startsWith('この入力でもOK:')) el.style.display='none';
+    if(t.startsWith('ち / し / つ / ふ / ん') || t.includes('ふくすうの ローマじ にゅうりょく')) el.style.display='none';
+  });
+}
+const _oldRenderWord = typeof renderWord==='function' ? renderWord : null;
+if(_oldRenderWord){
+  renderWord=function(){const r=_oldRenderWord.apply(this,arguments);compactBattleUi();return r}
+}
 </script>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="ぼくクエスト">
 <meta name="theme-color" content="#000000">
-<title>ぼくクエスト Ver.4.3</title>
+<title>ぼくクエスト Ver.4.4</title>
 <style>
 :root{--fg:#fff;--dim:#aaa;--gold:#ffd34e;--green:#44cf77;--red:#ff5757;--blue:#62a8ff;--panel:#050505}
 *{box-sizing:border-box}
@@ -99,7 +99,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 .audioState{font-size:11px;color:#9ad;margin-left:6px}
 
 
-/* Ver.4.3 release: 9 chapters / 27 stages and accepted stage backgrounds through final battle */
+/* Ver.4.4 release: 9 chapters / 27 stages and accepted stage backgrounds through final battle */
 .battleMessage{
  position:absolute;z-index:30;left:4%;right:4%;bottom:3%;
  background:rgba(0,0,0,.86);border:3px solid #fff;padding:10px 14px;
@@ -536,6 +536,37 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
   100%{opacity:0;filter:brightness(2) saturate(0);transform:scale(.92)}
 }
 
+
+/* ===== Ver.4.4 Modern RPG Select UI ===== */
+.modernJobs{min-height:82vh;background:radial-gradient(circle at 50% 15%,#183c68 0,#071426 48%,#030914 100%);padding:28px;border:1px solid #244b73;box-shadow:inset 0 0 70px #000}
+.jobHead{text-align:center;margin-bottom:22px}.jobHead h2{font-size:clamp(28px,4vw,44px);margin:4px 0}.jobHead p{color:#aebed0;margin:0}.jobEyebrow,.tinyCap{font-size:12px;letter-spacing:.24em;color:#7ca9d7}
+.jobModernGrid{display:grid!important;grid-template-columns:repeat(4,1fr);gap:14px!important}
+.jobModernCard{min-height:350px!important;padding:18px!important;border:1px solid #34506c!important;background:linear-gradient(180deg,rgba(18,43,70,.96),rgba(5,15,29,.98))!important;box-shadow:inset 0 0 24px rgba(64,140,220,.08);transition:.18s}
+.jobModernCard.sel{border-color:#73c8ff!important;outline:2px solid #3baeff!important;box-shadow:0 0 26px rgba(55,174,255,.45),inset 0 0 30px rgba(55,174,255,.14)!important;transform:translateY(-4px)}
+.jobModernCard .jobRole{font-size:11px;letter-spacing:.13em;color:#72bdf1;margin-top:8px}.jobModernCard h3{font-size:24px;margin:5px 0}.jobModernCard p{color:#c7d3df;min-height:48px}
+.jobModernCard .jobSpecial{margin-top:auto;border-top:1px solid #38516a;padding-top:12px;color:#ffe09a;font-weight:800}.jobModernCard .jobAvatar{font-size:88px;height:160px;display:grid;place-items:center}
+.modernJobs .jobPortrait{height:160px!important}
+.worldMapHero,.stageSelectHero{position:relative;min-height:clamp(560px,76vh,760px);border:2px solid #80653e;overflow:hidden;background-size:cover;background-position:center;box-shadow:0 14px 50px #000}
+.worldMapHero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,8,13,.18),rgba(3,8,13,.04) 50%,rgba(3,8,13,.45));pointer-events:none}
+.worldTopBar{position:absolute;z-index:3;left:28px;right:28px;top:24px;display:flex;align-items:flex-start;justify-content:space-between}.worldTopBar h2{margin:2px 0;text-shadow:0 2px 6px #000}
+.storyArchiveBtn,.parchmentBtn{border:2px solid #7e6746;background:linear-gradient(#f3e1b8,#d8b982);color:#2c1b0c;padding:11px 18px;font-weight:900;box-shadow:0 3px 0 #3b2b1a}
+.chapterNodes{position:absolute;z-index:3;left:5%;right:5%;bottom:26%;display:grid;grid-template-columns:repeat(9,1fr);gap:8px;align-items:end}
+.chapterNode{border:2px solid #5e5142;background:rgba(12,13,16,.86);color:#aaa;border-radius:50%;aspect-ratio:1;max-width:62px;display:grid;place-items:center;font-weight:900;box-shadow:0 3px 10px #000}
+.chapterNode.unlocked{color:#fff;border-color:#c7ad79}.chapterNode.selected{border-color:#ffd766;color:#ffd766;box-shadow:0 0 18px #e7a72b;background:#2a2115}
+.worldChapterCard{position:absolute;z-index:3;right:4%;top:18%;width:min(360px,42%);padding:24px;background:rgba(245,226,187,.94);color:#281b10;border:4px double #7e6746;box-shadow:0 12px 28px #000}
+.worldChapterNo{font-size:18px;font-weight:900}.worldChapterName{font-size:30px;font-weight:900;margin:5px 0 12px}.worldChapterDesc{line-height:1.7;margin-bottom:18px}
+.adventureBtn{border:3px double #d2a85d;background:linear-gradient(#5a321d,#2d170e);color:#fff0c9;padding:13px 20px;font-size:20px;font-weight:900;box-shadow:0 4px 0 #160b07,0 0 0 2px #3d2819}
+.stageSelectHero{background-position:center}
+.stageShade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.06) 0,rgba(0,0,0,.05) 55%,rgba(0,0,0,.35) 100%),linear-gradient(0deg,rgba(0,0,0,.62),transparent 34%);pointer-events:none}
+.chapterRibbon{position:absolute;z-index:3;top:25px;left:28px;padding:13px 28px;background:linear-gradient(#efd7a6,#cda66d);color:#2a1a0d;border:3px double #795a35;font-size:clamp(21px,2.6vw,32px);font-weight:900;box-shadow:0 4px 12px #000}
+.stageInfoCard{position:absolute;z-index:3;right:3%;top:12%;width:min(350px,38%);padding:25px 26px;background:rgba(249,232,198,.95);color:#26190e;border:4px double #7e6746;box-shadow:0 12px 28px #000;text-align:center}
+.stageNoBig{font-size:42px;font-weight:900}.stageNameBig{font-size:28px;font-weight:900}.ornamentLine{color:#9c7a4b;margin:10px 0}.stageDescBig{font-size:16px;line-height:1.7;min-height:54px}.stageStoryHook{font-size:13px;line-height:1.55;color:#705536;margin:8px 0 16px}
+.stageBottomNav{position:absolute;z-index:4;left:2%;right:2%;bottom:22px;display:grid;grid-template-columns:auto 46px 1fr 46px auto;gap:10px;align-items:center}
+.stageNodeRail{display:flex;justify-content:center;gap:12px;min-width:0}.detailStageChip{width:76px;height:76px;border-radius:50%!important;display:grid;place-items:center;padding:0!important;background:rgba(25,21,18,.9)!important;border:3px solid #6e5b45!important;color:#bdb5a8!important;font-size:19px;box-shadow:0 3px 8px #000}.detailStageChip.unlocked{color:#fff!important;border-color:#b89a6d!important}.detailStageChip.selected{color:#fff1b8!important;border-color:#ffd66c!important;outline:3px solid rgba(255,214,108,.32)!important;box-shadow:0 0 20px #e4a52e!important}.detailStageChip.cleared:after{content:"✓";position:absolute;margin:48px 0 0 48px;background:#315d3d;color:#fff;border-radius:50%;font-size:12px;width:20px;height:20px;display:grid;place-items:center}
+.stageArrow{height:54px;border:0;background:transparent;color:#ffe6a8;font-size:52px;text-shadow:0 2px 5px #000}.stageHelp{margin-top:8px}
+.storyArchiveScreen{min-height:78vh;background:radial-gradient(circle at 50% 0,#19344e,#050b12 65%);padding:24px}.archivePanel{border:1px solid #3c5b76;background:rgba(5,15,26,.92);padding:24px;min-height:620px}.archiveHead{display:flex;justify-content:space-between;align-items:center}.archiveHead h2{margin:3px 0}.archiveIntro{color:#9fb1c1}.storyArchiveList{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}.storyEntry{padding:12px;border:1px solid #3c5368;background:#0d1c2a;color:#aebac5;text-align:left}.storyEntry.unlocked{color:#fff}.storyEntry.selected{border-color:#73c8ff;box-shadow:0 0 14px rgba(80,180,255,.35)}.storyArchiveDetail{min-height:170px;padding:20px;border:1px solid #584c3c;background:#e8d5ae;color:#2a1c10;line-height:1.8}
+@media(max-width:900px){.jobModernGrid{grid-template-columns:repeat(2,1fr)}.worldChapterCard{width:44%;right:3%}.stageInfoCard{width:40%;right:2%;padding:18px}.stageBottomNav{grid-template-columns:150px 36px 1fr 36px 140px}.detailStageChip{width:64px;height:64px}.storyArchiveList{grid-template-columns:repeat(2,1fr)}}
+
 </style>
 </head>
 <body>
@@ -545,7 +576,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 <section id="title" class="screen active">
   <div class="titleWrap"><div class="titleCard">
     <h1>ぼくクエスト</h1>
-    <div class="subtitle">― ことばを とりもどす ぼうけん ― <small>Ver.4.3</small></div>
+    <div class="subtitle">― ことばを とりもどす ぼうけん ― <small>Ver.4.4</small></div>
     <div class="menu" id="titleMenu">
       <div class="sel" data-action="new">ぼうけんを はじめる <span class="key">[N]</span></div>
       <div data-action="continue">つづきから <span class="key">[C]</span></div>
@@ -572,15 +603,33 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
   <div class="panel"><input id="nameInput" maxlength="12" value="ぼく"><p class="help">Enter で つぎへ</p></div>
 </section>
 
-<section id="jobs" class="screen">
-  <h2>しょくぎょうを えらぼう</h2>
-  <div class="row" id="jobCards">
-    <div class="card sel warriorJobCard"><div class="jobPortrait"><img id="warriorJobPortrait" alt="せんし"></div><h3>せんし</h3><p>HPが おおく、ミスに つよい。ひっさつ「れっかざん」</p></div>
-    <div class="card"><div class="jobAvatar">🧙</div><h3>まほうつかい</h3><p>れんぞく せいかいで こうげきが つよくなる。ひっさつ「ことだまフレア」</p></div>
-    <div class="card"><div class="jobAvatar">🥷</div><h3>とうぞく</h3><p>すばやい れんぞくに むく。ひっさつ「かげばしり」</p></div>
-    <div class="card heroJobCard"><div class="jobPortrait"><img id="heroJobPortrait" alt="ゆうしゃ"></div><h3>ゆうしゃ</h3><p>こうしゅの バランスが よい。ひっさつ「ことばのせんこう」</p></div>
+<section id="jobs" class="screen modernJobs">
+  <div class="jobHead">
+    <div class="jobEyebrow">CHOOSE YOUR CLASS</div>
+    <h2>しょくぎょうを えらぼう</h2>
+    <p>ぼうけんの スタイルを えらんでください</p>
   </div>
-  <p class="help">←→ で えらぶ / Enter で けってい</p>
+  <div class="jobModernGrid" id="jobCards">
+    <div class="card sel warriorJobCard jobModernCard">
+      <div class="jobPortrait"><img id="warriorJobPortrait" alt="せんし"></div>
+      <div class="jobRole">DEFENDER</div><h3>せんし</h3>
+      <p>HPが おおく、ミスに つよい。</p><div class="jobSpecial">必殺技　れっかざん</div>
+    </div>
+    <div class="card jobModernCard">
+      <div class="jobAvatar">🧙</div><div class="jobRole">MAGIC ATTACKER</div><h3>まほうつかい</h3>
+      <p>れんぞく せいかいで こうげきが つよくなる。</p><div class="jobSpecial">必殺技　ことだまフレア</div>
+    </div>
+    <div class="card jobModernCard">
+      <div class="jobAvatar">🥷</div><div class="jobRole">SPEED ATTACKER</div><h3>とうぞく</h3>
+      <p>すばやい れんぞくに むく。</p><div class="jobSpecial">必殺技　かげばしり</div>
+    </div>
+    <div class="card heroJobCard jobModernCard">
+      <div class="jobPortrait"><img id="heroJobPortrait" alt="ゆうしゃ"></div>
+      <div class="jobRole">ALL-ROUNDER</div><h3>ゆうしゃ</h3>
+      <p>こうしゅの バランスが よい。</p><div class="jobSpecial">必殺技　ことばのせんこう</div>
+    </div>
+  </div>
+  <p class="help">←→ で えらぶ / Enter で けってい / Backspace：もどる</p>
 </section>
 
 <section id="story" class="screen">
@@ -598,30 +647,59 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 </section>
 
 
-<section id="map" class="screen">
-  <h2>ワールドマップ</h2>
-  <div class="worldOnly">
-    <div class="mapVisual worldMapVisual" id="mapVisual">
-      <div id="mapCursor" class="mapCursor"></div>
+<section id="map" class="screen modernWorldScreen">
+  <div class="worldMapShell">
+    <div class="worldMapHero" id="mapVisual">
+      <div class="worldTopBar">
+        <div><span class="tinyCap">WORLD MAP</span><h2>ワールドマップ</h2></div>
+        <button class="storyArchiveBtn" id="worldStoryBtn">▤ ものがたり</button>
+      </div>
+      <div id="chapterNodes" class="chapterNodes"></div>
+      <div class="worldChapterCard">
+        <div class="worldChapterNo" id="worldChapterNo">第1章</div>
+        <div class="worldChapterName" id="worldChapterName">ささやきの森</div>
+        <div class="worldChapterDesc" id="worldChapterDesc">ことばを追って、最初の森へ。</div>
+        <button id="openChapterBtn" class="adventureBtn">章をひらく　▶</button>
+      </div>
     </div>
-    <p class="help">←↑↓→：エリアを えらぶ　Enter：詳細地図　Backspace：もどる</p>
+    <p class="help">←→：章をえらぶ　Enter：章をひらく　M：ものがたり　Backspace：タイトル</p>
   </div>
 </section>
 
-<section id="stageMap" class="screen">
-  <h2 id="detailMapTitle">詳細地図</h2>
-  <div class="detailMapWrap">
-    <div class="mapVisual detailMapVisual" id="detailMapVisual">
-      <div id="detailStagePoints"></div>
-      <div id="detailMapCursor" class="mapCursor"></div>
+<section id="stageMap" class="screen modernStageScreen">
+  <div class="stageSelectHero" id="detailMapVisual">
+    <div class="stageShade"></div>
+    <div class="chapterRibbon" id="detailMapTitle">第1章　ささやきの森</div>
+
+    <aside class="stageInfoCard">
+      <div class="stageNoBig" id="detailStageNo">1-1</div>
+      <div class="stageNameBig" id="detailStageName">森の入口</div>
+      <div class="ornamentLine">◆ ───────── ◆</div>
+      <div class="stageDescBig" id="detailStageMeta">すべての物語は、ここからはじまる。</div>
+      <div class="stageStoryHook" id="detailStoryHook"></div>
+      <button id="adventureBtn" class="adventureBtn">⚔　冒険に出る</button>
+    </aside>
+
+    <div class="stageBottomNav">
+      <button id="backWorldBtn" class="parchmentBtn">▱ ワールドマップ</button>
+      <button id="stagePrevBtn" class="stageArrow">‹</button>
+      <div id="detailStageList" class="stageNodeRail"></div>
+      <button id="stageNextBtn" class="stageArrow">›</button>
+      <button id="stageStoryBtn" class="parchmentBtn">▤ ものがたり</button>
     </div>
-    <div class="detailStageInfo">
-      <div id="detailStageName" class="mapStageName"></div>
-      <div id="detailStageMeta" class="mapStageMeta"></div>
-      <div id="detailStageList" class="detailStageList"></div>
-    </div>
-    <p class="help">←↑↓→：ステージを えらぶ　Enter / A：たたかう　Backspace：ワールドマップ</p>
+    <div id="detailStagePoints" style="display:none"></div><div id="detailMapCursor" style="display:none"></div>
   </div>
+  <p class="help stageHelp">←→：ステージをえらぶ　Enter / A：冒険に出る　M：ものがたり　Backspace：ワールドマップ</p>
+</section>
+
+<section id="storyArchive" class="screen storyArchiveScreen">
+  <div class="archivePanel">
+    <div class="archiveHead"><div><span class="tinyCap">STORY ARCHIVE</span><h2>ものがたり</h2></div><button id="archiveCloseBtn" class="parchmentBtn">もどる</button></div>
+    <p class="archiveIntro">クリアしたステージまでの物語を、いつでも読み返せます。</p>
+    <div id="storyArchiveList" class="storyArchiveList"></div>
+    <div id="storyArchiveDetail" class="storyArchiveDetail"></div>
+  </div>
+  <p class="help">↑↓：ものがたりを選ぶ　Enter：読む　Backspace：もどる</p>
 </section>
 
 
@@ -909,6 +987,71 @@ $('#optFitBtn').onclick=()=>{
 document.addEventListener('pointerdown',()=>ensureAudio(),{passive:true});document.addEventListener('keydown',()=>ensureAudio(),{passive:true});
 
 
+
+const CHAPTER_META={
+  1:{title:'ささやきの森',desc:'消えたことばの手がかりを追って、森の奥へ。'},
+  2:{title:'記憶の図書館',desc:'忘れられた本と記憶が眠る、静かな書庫へ。'},
+  3:{title:'ごうごうの山',desc:'風と岩が鳴り響く山を越え、さらに先へ。'},
+  4:{title:'双翼の谷',desc:'青と紅、二つの翼が待つ谷を進む。'},
+  5:{title:'ことばの城',desc:'奪われたことばを取り戻すため、城の最深部へ。'},
+  6:{title:'失われたことばの海',desc:'終わったはずの物語。その先に残された光を追う。'},
+  7:{title:'はじまりの遺跡',desc:'ことばが生まれる前の記憶を宿す遺跡へ。'},
+  8:{title:'第8章',desc:'崩れゆく境界の先で、隠された真実に近づく。'},
+  9:{title:'第9章',desc:'ことばの源、そして「はじまりの場所」へ。'}
+};
+const STAGE_STORIES=[
+ '村から森へ続く道で、消えたことばの痕跡を見つける。',
+ '木々のささやきに混じって、誰かが残した小さな声を追う。',
+ '森の奥で、ことばを喰らう気配と向き合う。',
+ '森で得た手がかりは、忘れられた書庫へと続いていた。',
+ '記憶が道のように連なる回廊で、失われた想いをたどる。',
+ '封印された大書庫に、ことばが消えた理由の一端が眠る。',
+ '書庫の記録を頼りに、ごうごうと鳴る山道を進む。',
+ '断壁を吹き抜ける風の中、次の道を探す。',
+ '山頂から見えたのは、二つの翼が支配する谷だった。',
+ '青い翼の気配を追い、谷の奥へ。',
+ '紅蓮の熱が道をふさぐ。もう一つの翼が目を覚ます。',
+ '二つの竜を越えた先に、ことばの城への門が開く。',
+ '奪われたことばが集まる城へ踏み込む。',
+ '音さえ薄れる王座の間。決戦は近い。',
+ 'ことばを取り戻すための決戦。すべてが終わる――はずだった。',
+ '村にことばが戻った夜、光ることばの欠片が海へ流れていく。',
+ '海の底へ沈む光を追い、失われたことばの行き先を探す。',
+ '海底神殿は告げる。敵はことばを消したのではなく、どこかへ移していた。',
+ '神殿の転移装置の先。人のために造られたとは思えない遺跡に降り立つ。',
+ '白い樹と結晶から、文字になる前の光が生まれている。',
+ '始原の碑は語る。ことばは、想いを伝えようとしたときに生まれる力だと。',
+ '壊された碑の先に、意図的に隠された真実の痕跡を追う。',
+ '名を失ったものたちが残る場所で、「名前」の意味を問われる。',
+ '虚無の中心で、ことばを失わせる力の正体へ近づく。',
+ '音も文字もない世界。それでも想いは消えていない。',
+ 'ことばの源で、世界に満ちる最初の光と向き合う。',
+ '一本の地平線と、夜明けの光。ここが、すべてのはじまりの場所。'
+];
+const PSEUDO_ENDING=`村に、ことばが戻った。<br>「おはよう」「ありがとう」「おかえり」――笑顔と声が、もう一度あふれていく。<br><br>こうして、うばわれた ことばは せかいに もどりました。<br>そして ものがたりは―― おわったかに みえました。<br><br><b>第一部 完</b><br><br>その夜。主人公は、淡く光ることばの欠片が海へ流れていくのを見る。<br>まだ戻っていない、大切なことばがある。物語は海の向こうへ続いていた。`;
+let archiveIndex=0, archiveReturn='stageMap';
+function stageBackground(st){return (typeof STAGE_BG_42!=='undefined'&&STAGE_BG_42[st.no]) || (LAYER_ASSETS.backgrounds||[])[Math.min(3,Math.floor((state.selectedStage-1)/3))] || ASSETS.map}
+function renderModernWorld(){
+ const ch=currentChapter(), meta=CHAPTER_META[ch]||{title:`第${ch}章`,desc:''};
+ $('#mapVisual').style.backgroundImage=`url("${ASSETS.map}")`;
+ $('#worldChapterNo').textContent=`第${ch}章`;
+ $('#worldChapterName').textContent=meta.title;
+ $('#worldChapterDesc').textContent=meta.desc;
+ const unlocked=unlockedChapters();
+ $('#chapterNodes').innerHTML=Object.keys(CHAPTER_META).map(n=>`<button class="chapterNode ${unlocked.includes(+n)?'unlocked':''} ${+n===ch?'selected':''}" data-chapter="${n}">${n}</button>`).join('');
+}
+function renderStoryArchive(){
+ const cleared=Math.max(0,state.stage-1);
+ const entries=[{label:'プロローグ',unlocked:true,text:prologueText.map(x=>x.replace(/<br>/g,' ')).join('<br><br>')}];
+ stages.forEach((s,i)=>entries.push({label:`${s.no} ${s.name}`,unlocked:i<cleared,text:(i===14?PSEUDO_ENDING:STAGE_STORIES[i])}));
+ archiveIndex=Math.max(0,Math.min(archiveIndex,entries.length-1));
+ $('#storyArchiveList').innerHTML=entries.map((x,i)=>`<button class="storyEntry ${x.unlocked?'unlocked':''} ${i===archiveIndex?'selected':''}" data-story="${i}" ${x.unlocked?'':'disabled'}>${x.unlocked?'▤':'🔒'} ${x.label}</button>`).join('');
+ const x=entries[archiveIndex];
+ $('#storyArchiveDetail').innerHTML=x.unlocked?`<b>${x.label}</b><br><br>${x.text}`:'まだ ひらかれていない ものがたりです。';
+}
+function openStoryArchive(from='stageMap'){archiveReturn=from;archiveIndex=0;renderStoryArchive();show('storyArchive')}
+function closeStoryArchive(){show(archiveReturn);if(archiveReturn==='stageMap')renderStageMap();else renderModernWorld()}
+
 function stageInfo(n=state.selectedStage){return stages[Math.max(0,Math.min(stages.length-1,n-1))]}
 function stageChapter(s){return parseInt(String(s.no).split('-')[0],10)||1}
 function chapterStages(ch){return stages.map((s,i)=>({s,n:i+1})).filter(x=>stageChapter(x.s)===ch)}
@@ -916,19 +1059,18 @@ function unlockedChapters(){const max=stageChapter(stageInfo(state.stage));retur
 function currentChapter(){return stageChapter(stageInfo(state.selectedStage))}
 function selectChapter(ch){const list=chapterStages(ch).filter(x=>x.n<=state.stage);if(!list.length)return;if(!list.some(x=>x.n===state.selectedStage))state.selectedStage=list[list.length-1].n}
 function chapterAnchor(ch){const list=chapterStages(ch);return{x:list.reduce((a,b)=>a+b.s.x,0)/list.length,y:list.reduce((a,b)=>a+b.s.y,0)/list.length}}
-function renderMap(){const ch=currentChapter(),a=chapterAnchor(ch);$('#mapVisual').style.backgroundImage=`url("${ASSETS.map}")`;$('#mapCursor').style.left=(a.x*100)+'%';$('#mapCursor').style.top=(a.y*100)+'%'}
-function startMap(){stopWarriorAnim();stopHeroAnim();if(state.selectedStage>state.stage)state.selectedStage=state.stage;renderMap();show('map');save()}
-function moveMap(d){const chapters=unlockedChapters();let i=chapters.indexOf(currentChapter());if(i<0)i=0;i=(i+d+chapters.length)%chapters.length;selectChapter(chapters[i]);renderMap()}
+function renderMap(){renderModernWorld()}
+function startMap(){stopWarriorAnim();stopHeroAnim();if(state.selectedStage>state.stage)state.selectedStage=state.stage;renderModernWorld();show('map');save()}
+function moveMap(d){const chapters=unlockedChapters();let i=chapters.indexOf(currentChapter());if(i<0)i=0;i=(i+d+chapters.length)%chapters.length;selectChapter(chapters[i]);renderModernWorld()}
 function renderStageMap(){
- const ch=currentChapter(),group=chapterStages(ch),st=stageInfo();
- $('#detailMapTitle').textContent=`詳細地図　エリア ${ch}`;
- $('#detailMapVisual').style.backgroundImage=`url("${ASSETS.map}")`;
- $('#detailMapCursor').style.left=(st.x*100)+'%';
- $('#detailMapCursor').style.top=(st.y*100)+'%';
- $('#detailStageName').textContent=`${st.no}　${st.name}`;
- $('#detailStageMeta').innerHTML=`てき：${st.enemy}<br>${st.desc}<br>しんこう：${state.selectedStage<state.stage?'クリアずみ':'ちょうせん できます'}`;
- $('#detailStagePoints').innerHTML=group.map(({s,n})=>`<button class="stagePoint ${n<=state.stage?'unlocked':''} ${n===state.selectedStage?'selected':''}" data-stage="${n}" style="left:${s.x*100}%;top:${s.y*100}%"></button>`).join('');
- $('#detailStageList').innerHTML=group.map(({s,n})=>`<div class="detailStageChip ${n<=state.stage?'unlocked':''} ${n===state.selectedStage?'selected':''} ${n<state.stage?'cleared':''}" data-stage="${n}">${s.no}</div>`).join('')
+ const ch=currentChapter(),group=chapterStages(ch),st=stageInfo(),meta=CHAPTER_META[ch]||{title:`第${ch}章`};
+ $('#detailMapTitle').textContent=`第${ch}章　${meta.title}`;
+ $('#detailMapVisual').style.backgroundImage=`url("${stageBackground(st)}")`;
+ $('#detailStageNo').textContent=st.no;
+ $('#detailStageName').textContent=st.name;
+ $('#detailStageMeta').textContent=st.desc||'この先に、次のことばが待っている。';
+ $('#detailStoryHook').textContent=STAGE_STORIES[state.selectedStage-1]||'';
+ $('#detailStageList').innerHTML=group.map(({s,n})=>`<button class="detailStageChip ${n<=state.stage?'unlocked':''} ${n===state.selectedStage?'selected':''} ${n<state.stage?'cleared':''}" data-stage="${n}" ${n<=state.stage?'':'disabled'}>${s.no}</button>`).join('');
 }
 function openStageMap(){selectChapter(currentChapter());renderStageMap();show('stageMap')}
 function moveStageMap(d){const list=chapterStages(currentChapter()).filter(x=>x.n<=state.stage);let i=list.findIndex(x=>x.n===state.selectedStage);if(i<0)i=0;i=(i+d+list.length)%list.length;state.selectedStage=list[i].n;renderStageMap()}
@@ -1172,8 +1314,13 @@ document.addEventListener('keydown',e=>{
  else if(id==='create'){if(e.key==='Backspace'&&!$('#nameInput').value){e.preventDefault();show('title')}else if(e.key==='Enter'){state.name=$('#nameInput').value.trim()||'ぼく';show('jobs');renderJobs()}}
  else if(id==='jobs'){if(e.key==='Backspace'){e.preventDefault();show('create')}else if(e.key==='ArrowRight'||e.key==='ArrowDown'){state.jobIndex=(state.jobIndex+1)%4;renderJobs();e.preventDefault()}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){state.jobIndex=(state.jobIndex+3)%4;renderJobs();e.preventDefault()}else if(e.key==='Enter')confirmJob()}
  else if(id==='story'){if(e.key==='Backspace'||e.key==='Escape'){e.preventDefault();show('jobs');renderJobs()}else if(e.key==='Enter'||k==='n'){e.preventDefault();advancePrologue()}else if(k==='s')skipPrologue()}
- else if(id==='map'){if(e.key==='Backspace'||e.key==='Escape'){e.preventDefault();show('title')}else if(e.key==='ArrowRight'||e.key==='ArrowDown'){moveMap(1);e.preventDefault()}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){moveMap(-1);e.preventDefault()}else if(e.key==='Enter'){e.preventDefault();openStageMap()}else if(k==='s'){save();alert('セーブしました')}}
- else if(id==='stageMap'){if(e.key==='Backspace'||e.key==='Escape'){e.preventDefault();startMap()}else if(e.key==='ArrowRight'||e.key==='ArrowDown'){moveStageMap(1);e.preventDefault()}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){moveStageMap(-1);e.preventDefault()}else if(e.key==='Enter'||k==='a'){e.preventDefault();startBattle()}}
+ else if(id==='map'){if(e.key==='Backspace'||e.key==='Escape'){e.preventDefault();show('title')}else if(e.key==='ArrowRight'||e.key==='ArrowDown'){moveMap(1);e.preventDefault()}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){moveMap(-1);e.preventDefault()}else if(e.key==='Enter'){e.preventDefault();openStageMap()}else if(k==='m'){e.preventDefault();openStoryArchive('map')}else if(k==='s'){save();alert('セーブしました')}}
+ else if(id==='stageMap'){if(e.key==='Backspace'||e.key==='Escape'){e.preventDefault();startMap()}else if(e.key==='ArrowRight'||e.key==='ArrowDown'){moveStageMap(1);e.preventDefault()}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){moveStageMap(-1);e.preventDefault()}else if(e.key==='Enter'||k==='a'){e.preventDefault();startBattle()}else if(k==='m'){e.preventDefault();openStoryArchive('stageMap')}}
+ else if(id==='storyArchive'){
+   if(e.key==='Backspace'||e.key==='Escape'){e.preventDefault();closeStoryArchive()}
+   else if(e.key==='ArrowDown'||e.key==='ArrowRight'){archiveIndex++;renderStoryArchive();e.preventDefault()}
+   else if(e.key==='ArrowUp'||e.key==='ArrowLeft'){archiveIndex=Math.max(0,archiveIndex-1);renderStoryArchive();e.preventDefault()}
+ }
  else if(id==='battle'){if(e.code==='Space'){e.preventDefault();special();return}if(e.key==='Backspace'){e.preventDefault();if(battleTyped)backspaceBattle();else openStageMap();return}if(e.key==='Escape'){openStageMap();return}if(/^[a-z]$/i.test(e.key)){lastPhysicalKeyAt=performance.now();e.preventDefault();battleChar(e.key);return}}
  else if(id==='practice'){if(e.key==='Backspace'||e.key==='Escape'){e.preventDefault();show('title')}}
  else if(id==='bestiary'){if(e.key==='Backspace'||e.key==='Escape'){e.preventDefault();show('title')}else if(e.key==='ArrowRight'||e.key==='ArrowDown'){moveDex(1);e.preventDefault()}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){moveDex(-1);e.preventDefault()}}
@@ -1182,6 +1329,18 @@ document.addEventListener('keydown',e=>{
 $('#titleMenu').addEventListener('click',e=>{const d=e.target.closest('[data-action]');if(d)titleAction(d.dataset.action)});
 $('#jobCards').addEventListener('click',e=>{const c=e.target.closest('.card');if(!c)return;state.jobIndex=$$('#jobCards .card').indexOf(c);renderJobs()});
 $('#skipStory').onclick=skipPrologue;$('#prologueScene').onclick=e=>{if(e.target.id!=='skipStory')advancePrologue()};
+
+$('#openChapterBtn')?.addEventListener('click',openStageMap);
+$('#worldStoryBtn')?.addEventListener('click',()=>openStoryArchive('map'));
+$('#backWorldBtn')?.addEventListener('click',startMap);
+$('#stageStoryBtn')?.addEventListener('click',()=>openStoryArchive('stageMap'));
+$('#adventureBtn')?.addEventListener('click',startBattle);
+$('#stagePrevBtn')?.addEventListener('click',()=>moveStageMap(-1));
+$('#stageNextBtn')?.addEventListener('click',()=>moveStageMap(1));
+$('#archiveCloseBtn')?.addEventListener('click',closeStoryArchive);
+$('#chapterNodes')?.addEventListener('click',e=>{const b=e.target.closest('[data-chapter]');if(!b)return;const ch=+b.dataset.chapter;if(unlockedChapters().includes(ch)){selectChapter(ch);renderModernWorld()}});
+$('#storyArchiveList')?.addEventListener('click',e=>{const b=e.target.closest('[data-story]');if(!b||b.disabled)return;archiveIndex=+b.dataset.story;renderStoryArchive()});
+
 $('#stageList').addEventListener('click',e=>{const it=e.target.closest('.stageItem');if(!it)return;const i=$$('#stageList .stageItem').indexOf(it)+1;if(i<=state.stage){state.selectedStage=i;renderMap()}});
 $('#battleTypingBox').onclick=()=>$('#battleInput').focus({preventScroll:true});$('#battleScene').onclick=()=>$('#battleInput').focus({preventScroll:true});$('#specialBtn').onclick=special;
 $('#practiceBox').onclick=()=>$('#practiceInput').focus({preventScroll:true});

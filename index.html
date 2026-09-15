@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="ぼくクエスト">
 <meta name="theme-color" content="#000000">
-<title>ぼくクエスト Ver.4.7</title>
+<title>ぼくクエスト Ver.4.9</title>
 <style>
 :root{--fg:#fff;--dim:#aaa;--gold:#ffd34e;--green:#44cf77;--red:#ff5757;--blue:#62a8ff;--panel:#050505}
 *{box-sizing:border-box}
@@ -615,6 +615,35 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 #battle .typingRow .typingValue{font-size:clamp(21px,2.5vw,34px)!important;line-height:1.05!important}
 @media(max-width:900px){#battle .battleHud{grid-template-columns:minmax(0,40%) minmax(0,40%)!important;gap:12%!important}#battle .heroHudIcon{width:52px!important;height:52px!important}#battle .battleTimer{width:72px!important;height:72px!important;font-size:31px!important}#battle .battleMessage{left:7%!important;right:7%!important}#battle .battleScene{height:69dvh!important;min-height:500px!important}}
 
+
+/* ===== Ver.4.9 SAMPLE DESIGN ADOPTION ===== */
+#title .titleWrap{min-height:100dvh;background:linear-gradient(90deg,rgba(4,10,14,.22),rgba(4,10,14,.04) 58%,rgba(4,10,14,.28)),url("asset_25.webp") center/cover no-repeat!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;padding:6vh 7vw!important;overflow:hidden;position:relative}
+#title .titleWrap:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 35% 30%,transparent 0 34%,rgba(0,0,0,.18) 72%,rgba(0,0,0,.48));pointer-events:none}
+#title .titleCard{position:relative;z-index:2;width:min(620px,48vw)!important;text-align:left!important;padding:22px 28px 26px;background:linear-gradient(90deg,rgba(5,14,18,.52),rgba(5,14,18,.18),transparent);border-left:2px solid rgba(255,215,118,.75)}
+#title .titleKicker{font-size:14px;letter-spacing:.12em;color:#f7e7c2;text-shadow:0 2px 5px #000;margin-bottom:12px}
+#title .titleCard h1{font-family:serif;font-size:clamp(54px,7vw,96px)!important;line-height:.95;margin:0;color:#fff5d8;text-shadow:0 4px 0 #6e4a17,0 8px 24px #000;letter-spacing:.04em!important}
+#title .subtitle{font-size:15px!important;color:#fff0c4!important;border-top:1px solid rgba(255,216,117,.65);padding-top:12px;margin:18px 0 26px!important;text-align:center}
+#title .menu{display:grid;gap:5px;width:min(430px,100%)}
+#title .menu>div{background:linear-gradient(90deg,rgba(7,15,19,.76),rgba(7,15,19,.42));border:1px solid rgba(225,199,143,.18);padding:11px 18px!important;font-size:18px;transition:.16s;border-radius:2px}
+#title .menu>div.sel{color:#fff7da!important;border-color:#f0c75f!important;background:linear-gradient(90deg,rgba(73,45,10,.86),rgba(18,21,21,.58))!important;box-shadow:0 0 18px rgba(255,196,60,.35),inset 3px 0 #ffd45f;transform:translateX(7px)}
+#title .key{opacity:.45;font-size:11px}#title .help{opacity:.7;text-align:left;margin-left:12px}
+#create{min-height:100dvh!important;position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(3,8,13,.12),rgba(3,8,13,.48)),url("asset_25.webp") center/cover no-repeat!important;display:grid!important;grid-template-columns:1.05fr .95fr!important;align-items:stretch!important;padding:0!important}
+#create .nameHeroArt{display:flex;align-items:flex-end;justify-content:center;overflow:hidden;background:radial-gradient(circle at 50% 45%,rgba(180,58,29,.22),transparent 55%)}
+#create .nameHeroArt img{width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.08) contrast(1.04);mask-image:linear-gradient(90deg,#000 80%,transparent)}
+#create .nameParchment{align-self:center;justify-self:center;width:min(560px,88%);padding:36px 42px;background:linear-gradient(rgba(250,236,202,.97),rgba(237,216,171,.97));color:#291c10;border:5px double #8e6d37;box-shadow:0 20px 70px #000b,inset 0 0 40px rgba(118,73,20,.12);text-align:center;position:relative}
+#create .nameKicker{position:absolute;right:0;top:-52px;color:#fff;text-shadow:0 2px 6px #000;font-size:14px;letter-spacing:.08em}
+#create h2{font-family:serif;font-size:clamp(30px,4vw,48px)!important;margin:0 0 10px!important;color:#21170e}#create .nameParchment p{line-height:1.8;margin:0 0 20px}
+#create #nameInput{width:100%!important;box-sizing:border-box;background:#071526!important;color:#fff!important;border:3px double #9f7b39!important;border-radius:4px!important;padding:15px 18px!important;font-size:30px!important;box-shadow:inset 0 0 16px #0008!important}
+#create .nameCount{font-size:12px;margin:10px 0 20px;color:#6f5738}.nameStartBtn{width:100%;padding:15px;border:3px double #c99a3d;background:linear-gradient(#153b70,#061a35);color:#fff7dd;font-size:20px;font-weight:900;box-shadow:0 5px 12px #0005}.nameKeys{margin-top:18px;font-size:12px;color:#fff;position:absolute;left:0;right:0;bottom:-38px;text-shadow:0 2px 4px #000}
+/* official class portraits: never replaced by idle sprite previews */
+.modernPortrait{height:300px!important;border-radius:4px!important}.modernPortrait img{object-fit:cover!important;object-position:center!important}.jobModernCard{min-height:485px!important;padding:12px!important;background:linear-gradient(180deg,rgba(9,23,38,.96),rgba(4,10,18,.98))!important}.jobModernCard.sel{border-color:#ffd35e!important;outline:2px solid #d99d24!important;box-shadow:0 0 28px rgba(255,195,52,.4)!important}.jobModernCard h3{font-size:25px!important}
+/* large battle portrait */
+#battle .heroHudIcon{width:96px!important;height:96px!important;margin:-15px 5px -15px -8px!important;border-width:3px!important;object-fit:cover!important;box-shadow:0 0 0 3px rgba(5,12,18,.92),0 0 20px rgba(255,205,83,.42)!important}
+/* map becomes the selector itself */
+.worldMapAllStages{display:block!important;position:absolute!important;inset:78px 2% 4%!important;z-index:4!important}.worldChapterCluster{position:absolute!important;width:auto!important;min-width:145px;background:linear-gradient(180deg,rgba(8,20,31,.9),rgba(3,9,15,.92))!important;border:2px solid #88724b!important;border-radius:10px;padding:9px 12px!important;transition:.22s;box-shadow:0 6px 16px #0009!important}.worldChapterCluster .clusterStages{display:none!important}.worldChapterCluster.selected{border-color:#ffd65e!important;transform:translateY(-7px) scale(1.06);box-shadow:0 0 0 3px rgba(255,211,78,.2),0 0 28px rgba(255,196,45,.65)!important}.worldChapterCluster.selected:before{content:"◆";position:absolute;left:50%;bottom:-28px;transform:translateX(-50%);color:#ffe06d;font-size:22px;text-shadow:0 0 12px #ffb000;animation:mapCursorPulse 1s ease-in-out infinite alternate}.clusterTitle{margin:0!important;text-align:center!important;font-size:13px!important;color:#fff2c8!important;white-space:nowrap}@keyframes mapCursorPulse{to{transform:translateX(-50%) translateY(5px);filter:brightness(1.5)}}
+.worldChapterCluster:nth-child(1){left:8%;top:56%}.worldChapterCluster:nth-child(2){left:26%;top:42%}.worldChapterCluster:nth-child(3){left:17%;top:18%}.worldChapterCluster:nth-child(4){left:43%;top:61%}.worldChapterCluster:nth-child(5){left:67%;top:63%}.worldChapterCluster:nth-child(6){left:78%;top:30%}.worldChapterCluster:nth-child(7){left:55%;top:12%}.worldChapterCluster:nth-child(8){left:40%;top:34%}.worldChapterCluster:nth-child(9){left:63%;top:4%}.worldMapHero{background-image:url("asset_61.webp")!important;background-size:cover!important;background-position:center!important}.worldMapHero:after{background:linear-gradient(180deg,rgba(3,8,13,.12),rgba(3,8,13,.08) 60%,rgba(3,8,13,.35))!important}
+@media(max-width:900px){#title .titleCard{width:68vw!important}#create{grid-template-columns:.9fr 1.1fr!important}#create .nameParchment{padding:24px}.modernPortrait{height:220px!important}.jobModernCard{min-height:390px!important}#battle .heroHudIcon{width:84px!important;height:84px!important;margin:-12px 3px -12px -6px!important}.worldChapterCluster{min-width:112px!important;padding:6px 8px!important}.clusterTitle{font-size:10px!important}}
+
 </style>
 </head>
 <body>
@@ -623,8 +652,9 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 
 <section id="title" class="screen active">
   <div class="titleWrap"><div class="titleCard">
+    <div class="titleKicker">キミのことばが　この世界を動かす――</div>
     <h1>ぼくクエスト</h1>
-    <div class="subtitle">― ことばを とりもどす ぼうけん ― <small>Ver.4.7</small></div>
+    <div class="subtitle">― ことばでひろがる ぼうけんのせかい ― <small>Ver.4.9</small></div>
     <div class="menu" id="titleMenu">
       <div class="sel" data-action="new">ぼうけんを はじめる <span class="key">[N]</span></div>
       <div data-action="continue">つづきから <span class="key">[C]</span></div>
@@ -661,8 +691,16 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 </section>
 
 <section id="create" class="screen">
-  <h2>なまえを きめよう</h2>
-  <div class="panel"><input id="nameInput" maxlength="12" value="ぼく"><p class="help">Enter で つぎへ</p></div>
+  <div class="nameHeroArt"><img src="job_warrior.webp" alt="せんし"></div>
+  <div class="nameParchment">
+    <div class="nameKicker">ここから、ぼくの物語がはじまる――</div>
+    <h2>あなたの　なまえは？</h2>
+    <p>このせかいで 呼ばれる、<br>あなただけの名前を決めよう。</p>
+    <input id="nameInput" maxlength="12" value="ぼく">
+    <div class="nameCount">※ あと 10 文字まで</div>
+    <button class="nameStartBtn" type="button" onclick="state.name=$('#nameInput').value.trim()||'ぼく';show('jobs');renderJobs()">この なまえで はじめる</button>
+    <div class="nameKeys">Enter：決定　 Backspace：もどる</div>
+  </div>
 </section>
 
 <section id="jobs" class="screen modernJobs">
@@ -864,7 +902,7 @@ function stopWhisperEnemyIdle(){if(whisperEnemyTimer)clearInterval(whisperEnemyT
 function startWhisperEnemyIdle(){
  stopWhisperEnemyIdle();
  const ep=$('#enemyPortrait'),st=stageInfo();
- if(!ep||stageChapter(st)!==1||!st.enemy.includes('ヨクブクロ'))return;
+ if(!ep||st.no!=='1-1')return;
  whisperEnemyFrame=0;ep.src=WHISPER_ENEMY_IDLE[0];
  whisperEnemyTimer=setInterval(()=>{
    if(!$('#battle')?.classList.contains('active')){stopWhisperEnemyIdle();return}
@@ -1000,7 +1038,7 @@ function nextExpected(typed,word){return [...new Set(romajiVariants(word).filter
 function show(id){
  $$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));
  if(id==='title')renderTitle();
- if(id==='jobs'){startWarriorJobPreview();startHeroJobPreview();}else{stopWarriorJobPreview();stopHeroJobPreview();}
+ if(id==='jobs'){stopWarriorJobPreview();stopHeroJobPreview();}else{stopWarriorJobPreview();stopHeroJobPreview();}
 }
 function setupStats(){if(state.mode==='hard'){state.maxHp=30;state.hp=30;return}const hp={せんし:38,まほうつかい:27,とうぞく:30,ゆうしゃ:33}[state.job]||33;state.maxHp=hp+(state.level-1)*5;state.hp=state.maxHp}
 function renderTitle(){const hard=$('#hardMenu');hard.style.display=state.normalCleared?'flex':'none';const items=$$('#titleMenu [data-action]').filter(x=>x.style.display!=='none');state.titleIndex=Math.min(state.titleIndex,items.length-1);items.forEach((x,i)=>x.classList.toggle('sel',i===state.titleIndex))}
@@ -1497,6 +1535,35 @@ function richAfterHitSfx(){
 #create{background:radial-gradient(circle at 50% 35%,#173757,#07131f 55%,#02060b);align-items:center;justify-content:center}#create h2{font-size:clamp(30px,4vw,48px);margin-bottom:20px}#create .panel{width:min(620px,82vw);padding:34px;border-radius:22px;border:1px solid #416b8e;background:linear-gradient(180deg,rgba(13,37,61,.94),rgba(4,14,25,.96));box-shadow:0 25px 80px #0009,inset 0 1px rgba(255,255,255,.08)}#nameInput{width:100%;font-size:34px;padding:17px 20px;border-radius:12px;border:1px solid #73c8ff;background:#06111d;color:#fff;outline:none;box-shadow:0 0 0 4px rgba(55,174,255,.08)}#nameInput:focus{box-shadow:0 0 0 4px rgba(55,174,255,.18),0 0 24px rgba(55,174,255,.2)}
 #battle .heroHudIcon{width:64px!important;height:64px!important;border-width:3px!important;box-shadow:0 0 0 2px #000b,0 0 18px rgba(232,200,117,.32)!important}
 #battle .heroHudIdentity{gap:12px!important}#battle .heroHud{min-height:82px!important}#battle .comboOverlay{display:none!important}
+
+/* ===== Ver.4.9 SAMPLE DESIGN ADOPTION ===== */
+#title .titleWrap{min-height:100dvh;background:linear-gradient(90deg,rgba(4,10,14,.22),rgba(4,10,14,.04) 58%,rgba(4,10,14,.28)),url("asset_25.webp") center/cover no-repeat!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;padding:6vh 7vw!important;overflow:hidden;position:relative}
+#title .titleWrap:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 35% 30%,transparent 0 34%,rgba(0,0,0,.18) 72%,rgba(0,0,0,.48));pointer-events:none}
+#title .titleCard{position:relative;z-index:2;width:min(620px,48vw)!important;text-align:left!important;padding:22px 28px 26px;background:linear-gradient(90deg,rgba(5,14,18,.52),rgba(5,14,18,.18),transparent);border-left:2px solid rgba(255,215,118,.75)}
+#title .titleKicker{font-size:14px;letter-spacing:.12em;color:#f7e7c2;text-shadow:0 2px 5px #000;margin-bottom:12px}
+#title .titleCard h1{font-family:serif;font-size:clamp(54px,7vw,96px)!important;line-height:.95;margin:0;color:#fff5d8;text-shadow:0 4px 0 #6e4a17,0 8px 24px #000;letter-spacing:.04em!important}
+#title .subtitle{font-size:15px!important;color:#fff0c4!important;border-top:1px solid rgba(255,216,117,.65);padding-top:12px;margin:18px 0 26px!important;text-align:center}
+#title .menu{display:grid;gap:5px;width:min(430px,100%)}
+#title .menu>div{background:linear-gradient(90deg,rgba(7,15,19,.76),rgba(7,15,19,.42));border:1px solid rgba(225,199,143,.18);padding:11px 18px!important;font-size:18px;transition:.16s;border-radius:2px}
+#title .menu>div.sel{color:#fff7da!important;border-color:#f0c75f!important;background:linear-gradient(90deg,rgba(73,45,10,.86),rgba(18,21,21,.58))!important;box-shadow:0 0 18px rgba(255,196,60,.35),inset 3px 0 #ffd45f;transform:translateX(7px)}
+#title .key{opacity:.45;font-size:11px}#title .help{opacity:.7;text-align:left;margin-left:12px}
+#create{min-height:100dvh!important;position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(3,8,13,.12),rgba(3,8,13,.48)),url("asset_25.webp") center/cover no-repeat!important;display:grid!important;grid-template-columns:1.05fr .95fr!important;align-items:stretch!important;padding:0!important}
+#create .nameHeroArt{display:flex;align-items:flex-end;justify-content:center;overflow:hidden;background:radial-gradient(circle at 50% 45%,rgba(180,58,29,.22),transparent 55%)}
+#create .nameHeroArt img{width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.08) contrast(1.04);mask-image:linear-gradient(90deg,#000 80%,transparent)}
+#create .nameParchment{align-self:center;justify-self:center;width:min(560px,88%);padding:36px 42px;background:linear-gradient(rgba(250,236,202,.97),rgba(237,216,171,.97));color:#291c10;border:5px double #8e6d37;box-shadow:0 20px 70px #000b,inset 0 0 40px rgba(118,73,20,.12);text-align:center;position:relative}
+#create .nameKicker{position:absolute;right:0;top:-52px;color:#fff;text-shadow:0 2px 6px #000;font-size:14px;letter-spacing:.08em}
+#create h2{font-family:serif;font-size:clamp(30px,4vw,48px)!important;margin:0 0 10px!important;color:#21170e}#create .nameParchment p{line-height:1.8;margin:0 0 20px}
+#create #nameInput{width:100%!important;box-sizing:border-box;background:#071526!important;color:#fff!important;border:3px double #9f7b39!important;border-radius:4px!important;padding:15px 18px!important;font-size:30px!important;box-shadow:inset 0 0 16px #0008!important}
+#create .nameCount{font-size:12px;margin:10px 0 20px;color:#6f5738}.nameStartBtn{width:100%;padding:15px;border:3px double #c99a3d;background:linear-gradient(#153b70,#061a35);color:#fff7dd;font-size:20px;font-weight:900;box-shadow:0 5px 12px #0005}.nameKeys{margin-top:18px;font-size:12px;color:#fff;position:absolute;left:0;right:0;bottom:-38px;text-shadow:0 2px 4px #000}
+/* official class portraits: never replaced by idle sprite previews */
+.modernPortrait{height:300px!important;border-radius:4px!important}.modernPortrait img{object-fit:cover!important;object-position:center!important}.jobModernCard{min-height:485px!important;padding:12px!important;background:linear-gradient(180deg,rgba(9,23,38,.96),rgba(4,10,18,.98))!important}.jobModernCard.sel{border-color:#ffd35e!important;outline:2px solid #d99d24!important;box-shadow:0 0 28px rgba(255,195,52,.4)!important}.jobModernCard h3{font-size:25px!important}
+/* large battle portrait */
+#battle .heroHudIcon{width:96px!important;height:96px!important;margin:-15px 5px -15px -8px!important;border-width:3px!important;object-fit:cover!important;box-shadow:0 0 0 3px rgba(5,12,18,.92),0 0 20px rgba(255,205,83,.42)!important}
+/* map becomes the selector itself */
+.worldMapAllStages{display:block!important;position:absolute!important;inset:78px 2% 4%!important;z-index:4!important}.worldChapterCluster{position:absolute!important;width:auto!important;min-width:145px;background:linear-gradient(180deg,rgba(8,20,31,.9),rgba(3,9,15,.92))!important;border:2px solid #88724b!important;border-radius:10px;padding:9px 12px!important;transition:.22s;box-shadow:0 6px 16px #0009!important}.worldChapterCluster .clusterStages{display:none!important}.worldChapterCluster.selected{border-color:#ffd65e!important;transform:translateY(-7px) scale(1.06);box-shadow:0 0 0 3px rgba(255,211,78,.2),0 0 28px rgba(255,196,45,.65)!important}.worldChapterCluster.selected:before{content:"◆";position:absolute;left:50%;bottom:-28px;transform:translateX(-50%);color:#ffe06d;font-size:22px;text-shadow:0 0 12px #ffb000;animation:mapCursorPulse 1s ease-in-out infinite alternate}.clusterTitle{margin:0!important;text-align:center!important;font-size:13px!important;color:#fff2c8!important;white-space:nowrap}@keyframes mapCursorPulse{to{transform:translateX(-50%) translateY(5px);filter:brightness(1.5)}}
+.worldChapterCluster:nth-child(1){left:8%;top:56%}.worldChapterCluster:nth-child(2){left:26%;top:42%}.worldChapterCluster:nth-child(3){left:17%;top:18%}.worldChapterCluster:nth-child(4){left:43%;top:61%}.worldChapterCluster:nth-child(5){left:67%;top:63%}.worldChapterCluster:nth-child(6){left:78%;top:30%}.worldChapterCluster:nth-child(7){left:55%;top:12%}.worldChapterCluster:nth-child(8){left:40%;top:34%}.worldChapterCluster:nth-child(9){left:63%;top:4%}.worldMapHero{background-image:url("asset_61.webp")!important;background-size:cover!important;background-position:center!important}.worldMapHero:after{background:linear-gradient(180deg,rgba(3,8,13,.12),rgba(3,8,13,.08) 60%,rgba(3,8,13,.35))!important}
+@media(max-width:900px){#title .titleCard{width:68vw!important}#create{grid-template-columns:.9fr 1.1fr!important}#create .nameParchment{padding:24px}.modernPortrait{height:220px!important}.jobModernCard{min-height:390px!important}#battle .heroHudIcon{width:84px!important;height:84px!important;margin:-12px 3px -12px -6px!important}.worldChapterCluster{min-width:112px!important;padding:6px 8px!important}.clusterTitle{font-size:10px!important}}
+
 </style>
 <script id="ver48-patch">
 (()=>{const apply=()=>{document.title=document.title.replace(/4\.7/g,'4.8');document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.8');const c=document.getElementById('combo');if(c)c.remove();};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();})();

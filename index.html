@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="ぼくクエスト">
 <meta name="theme-color" content="#000000">
-<title>ぼくクエスト Ver.4.9</title>
+<title>ぼくクエスト Ver.4.10</title>
 <style>
 :root{--fg:#fff;--dim:#aaa;--gold:#ffd34e;--green:#44cf77;--red:#ff5757;--blue:#62a8ff;--panel:#050505}
 *{box-sizing:border-box}
@@ -616,7 +616,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 @media(max-width:900px){#battle .battleHud{grid-template-columns:minmax(0,40%) minmax(0,40%)!important;gap:12%!important}#battle .heroHudIcon{width:52px!important;height:52px!important}#battle .battleTimer{width:72px!important;height:72px!important;font-size:31px!important}#battle .battleMessage{left:7%!important;right:7%!important}#battle .battleScene{height:69dvh!important;min-height:500px!important}}
 
 
-/* ===== Ver.4.9 SAMPLE DESIGN ADOPTION ===== */
+/* ===== Ver.4.10 SAMPLE DESIGN ADOPTION ===== */
 #title .titleWrap{min-height:100dvh;background:linear-gradient(90deg,rgba(4,10,14,.22),rgba(4,10,14,.04) 58%,rgba(4,10,14,.28)),url("asset_25.webp") center/cover no-repeat!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;padding:6vh 7vw!important;overflow:hidden;position:relative}
 #title .titleWrap:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 35% 30%,transparent 0 34%,rgba(0,0,0,.18) 72%,rgba(0,0,0,.48));pointer-events:none}
 #title .titleCard{position:relative;z-index:2;width:min(620px,48vw)!important;text-align:left!important;padding:22px 28px 26px;background:linear-gradient(90deg,rgba(5,14,18,.52),rgba(5,14,18,.18),transparent);border-left:2px solid rgba(255,215,118,.75)}
@@ -654,7 +654,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
   <div class="titleWrap"><div class="titleCard">
     <div class="titleKicker">キミのことばが　この世界を動かす――</div>
     <h1>ぼくクエスト</h1>
-    <div class="subtitle">― ことばでひろがる ぼうけんのせかい ― <small>Ver.4.9</small></div>
+    <div class="subtitle">― ことばでひろがる ぼうけんのせかい ― <small>Ver.4.10</small></div>
     <div class="menu" id="titleMenu">
       <div class="sel" data-action="new">ぼうけんを はじめる <span class="key">[N]</span></div>
       <div data-action="continue">つづきから <span class="key">[C]</span></div>
@@ -1536,7 +1536,7 @@ function richAfterHitSfx(){
 #battle .heroHudIcon{width:64px!important;height:64px!important;border-width:3px!important;box-shadow:0 0 0 2px #000b,0 0 18px rgba(232,200,117,.32)!important}
 #battle .heroHudIdentity{gap:12px!important}#battle .heroHud{min-height:82px!important}#battle .comboOverlay{display:none!important}
 
-/* ===== Ver.4.9 SAMPLE DESIGN ADOPTION ===== */
+/* ===== Ver.4.10 SAMPLE DESIGN ADOPTION ===== */
 #title .titleWrap{min-height:100dvh;background:linear-gradient(90deg,rgba(4,10,14,.22),rgba(4,10,14,.04) 58%,rgba(4,10,14,.28)),url("asset_25.webp") center/cover no-repeat!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;padding:6vh 7vw!important;overflow:hidden;position:relative}
 #title .titleWrap:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 35% 30%,transparent 0 34%,rgba(0,0,0,.18) 72%,rgba(0,0,0,.48));pointer-events:none}
 #title .titleCard{position:relative;z-index:2;width:min(620px,48vw)!important;text-align:left!important;padding:22px 28px 26px;background:linear-gradient(90deg,rgba(5,14,18,.52),rgba(5,14,18,.18),transparent);border-left:2px solid rgba(255,215,118,.75)}
@@ -1567,4 +1567,66 @@ function richAfterHitSfx(){
 </style>
 <script id="ver48-patch">
 (()=>{const apply=()=>{document.title=document.title.replace(/4\.7/g,'4.8');document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.8');const c=document.getElementById('combo');if(c)c.remove();};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();})();
+</script>
+<style id="ver410-layout-fix">
+/* ===== Ver.4.10: iPad single-screen navigation + final class portraits + HUD design #2 ===== */
+html,body{width:100%;height:100%;margin:0;overflow:hidden!important;background:#02070d!important}
+body{min-height:100dvh!important;padding:0!important}
+#game{width:100%!important;height:100dvh!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important;background:#02070d!important}
+#game>.screen{display:none!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;overflow:hidden!important;box-sizing:border-box!important}
+#game>.screen.active{display:block!important}
+#game>#create.screen.active{display:grid!important}
+#game>#jobs.screen.active{display:flex!important}
+
+/* Class select: always four official uploaded illustrations, one row, no page scroll */
+#jobs.modernJobs{flex-direction:column!important;justify-content:center!important;padding:clamp(12px,2vh,24px) clamp(18px,3vw,42px)!important;background:radial-gradient(circle at 50% 10%,#173a65 0,#071426 50%,#030914 100%)!important}
+#jobs .jobHead{flex:0 0 auto;margin-bottom:10px!important}
+#jobs .jobHead h2{font-size:clamp(28px,4vh,48px)!important;margin:2px 0 4px!important}
+#jobs .jobHead p{margin:0!important}
+#jobs .jobModernGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:clamp(8px,1.2vw,16px)!important;width:100%!important;max-width:1380px!important;margin:0 auto!important;min-height:0!important}
+#jobs .jobModernCard{min-height:0!important;height:min(66dvh,600px)!important;padding:10px!important;overflow:hidden!important;display:flex!important;flex-direction:column!important}
+#jobs .modernPortrait{height:auto!important;flex:1 1 auto!important;min-height:180px!important;max-height:360px!important}
+#jobs .modernPortrait img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center center!important}
+#jobs .jobRole{margin-top:7px!important;font-size:10px!important}#jobs .jobModernCard h3{font-size:clamp(20px,2.3vw,29px)!important;margin:2px 0 5px!important}
+#jobs .jobModernCard p{font-size:clamp(11px,1.15vw,15px)!important;line-height:1.35!important;margin:0 0 7px!important}.jobSpecial{font-size:clamp(11px,1.1vw,14px)!important;margin-top:auto!important;padding-top:7px!important}
+#jobs>.help{margin:8px 0 0!important;flex:0 0 auto!important}
+
+/* Name screen remains a single viewport */
+#create .nameHeroArt,#create .nameParchment{min-height:0!important}
+#create .nameHeroArt img{max-height:100dvh!important}
+
+/* HUD design #2: portrait on left, all identity/gauges aligned to its right */
+#battle .heroHud{position:relative!important;min-height:126px!important;padding:12px 14px 10px 126px!important;border:1px solid rgba(235,199,105,.88)!important;border-radius:18px!important;background:linear-gradient(100deg,rgba(5,20,34,.94),rgba(7,31,52,.84),rgba(4,13,23,.88))!important;box-shadow:0 8px 26px #0008,inset 0 0 0 1px rgba(255,255,255,.06),0 0 18px rgba(226,184,76,.08)!important;overflow:visible!important}
+#battle .heroHud .hudTop{height:38px!important;min-height:38px!important;margin:0 0 5px!important;border-bottom:1px solid rgba(222,190,111,.32);display:flex!important;align-items:center!important;justify-content:space-between!important}
+#battle .heroHudIdentity{display:contents!important}
+#battle .heroHudIcon{position:absolute!important;left:10px!important;top:50%!important;transform:translateY(-50%)!important;width:104px!important;height:104px!important;margin:0!important;border-radius:50%!important;border:4px solid #e6bd55!important;outline:3px solid rgba(4,16,27,.96)!important;object-fit:cover!important;object-position:center 30%!important;box-shadow:0 0 0 1px #fff4b0,0 0 22px rgba(255,199,58,.35)!important;z-index:2!important}
+#battle .heroHud #heroHpName{font-size:clamp(14px,1.55vw,20px)!important;font-weight:900!important;letter-spacing:.02em!important;color:#fff!important;white-space:nowrap!important}
+#battle .heroHud #heroHpText{font-size:clamp(15px,1.55vw,20px)!important;font-weight:900!important;color:#fff!important}
+#battle .heroHud .gaugeRow{grid-template-columns:58px minmax(0,1fr)!important;gap:7px!important;margin:4px 0!important}
+#battle .heroHud .gaugeLabel{font-size:12px!important;color:#f3d889!important;font-weight:800!important}
+#battle .heroHud .hpbar,#battle .heroHud .spbar{height:15px!important;border:1px solid rgba(241,215,150,.85)!important;border-radius:10px!important;background:#02070c!important;box-shadow:inset 0 2px 5px #000!important}
+#battle .heroHud .hpfill{background:linear-gradient(90deg,#19b969,#43e18b)!important}
+#battle .heroHud .spfill{background:linear-gradient(90deg,#174f9d,#3f8cff)!important}
+#battle .comboOverlay{display:none!important}
+
+@media(max-width:900px){
+ #jobs.modernJobs{padding:10px 18px!important}#jobs .jobModernGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:7px!important}#jobs .jobModernCard{height:68dvh!important;padding:7px!important}#jobs .modernPortrait{min-height:150px!important}#jobs .jobModernCard p{font-size:10px!important}#jobs .jobSpecial{font-size:10px!important}
+ #battle .heroHud{min-height:116px!important;padding-left:116px!important}#battle .heroHudIcon{width:94px!important;height:94px!important}
+}
+</style>
+<script id="ver410-patch">
+(()=>{
+ const apply=()=>{
+   document.title=document.title.replace(/Ver\.\s*4\.(?:8|9)/g,'Ver.4.10').replace(/4\.(?:8|9)/g,'4.10');
+   document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.10');
+   const official={
+    warrior:'job_warrior.webp', mage:'job_mage.webp', thief:'job_thief.webp', hero:'job_hero.webp'
+   };
+   const imgs=document.querySelectorAll('#jobCards .modernPortrait img');
+   ['warrior','mage','thief','hero'].forEach((k,i)=>{if(imgs[i]){imgs[i].src=official[k];imgs[i].removeAttribute('srcset')}});
+   const nameArt=document.querySelector('#create .nameHeroArt img'); if(nameArt)nameArt.src='job_warrior.webp';
+   const c=document.getElementById('combo');if(c)c.remove();
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
 </script>

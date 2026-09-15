@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="ぼくクエスト">
 <meta name="theme-color" content="#000000">
-<title>ぼくクエスト Ver.4.10</title>
+<title>ぼくクエスト Ver.4.10.1</title>
 <style>
 :root{--fg:#fff;--dim:#aaa;--gold:#ffd34e;--green:#44cf77;--red:#ff5757;--blue:#62a8ff;--panel:#050505}
 *{box-sizing:border-box}
@@ -935,9 +935,9 @@ const stages=[
  {name:'ささやきの小径',no:'1-2',enemy:'アゲハちょうのようちゅう',hp:38,x:0.12,y:0.18,desc:'森の葉陰を うねうね進む ふしぎな幼虫。',art:'ageha_1-2.gif'},
  {name:'ことば喰いの森',no:'1-3',enemy:'ヨクブクロ・オオグイ',hp:47,x:0.12,y:0.18,desc:'ことばを大量に喰らい、巨大に膨れたヨクブクロ。',art:'yokubukuro_oogui_1-3.gif'},
  {name:'忘れられた書庫',no:'2-1',enemy:'メモリゴースト',hp:55,x:0.20,y:0.18,desc:'忘れられた記憶を求め、巨大な歯を鳴らす書庫の怪異。',art:'memory_ghost_2-1.gif'},
- {name:'記憶の回廊',no:'2-2',enemy:'カブトムシのメス',hp:64,x:0.20,y:0.18,desc:'この地に ひそむ ことばの まもの。',art:LAYER_ASSETS.enemies.female_beetle},
- {name:'封印の大書庫',no:'2-3',enemy:'ぼうきゃくのばんにん',hp:72,x:0.20,y:0.18,desc:'この地に ひそむ ことばの まもの。',art:LAYER_ASSETS.enemies.guardian},
- {name:'岩鳴りの山道',no:'3-1',enemy:'こんぼうのきょちゅう',hp:81,x:0.28,y:0.26,desc:'※モンスターは背景確定後に正式設定予定。',art:LAYER_ASSETS.enemies.club_giant},
+ {name:'記憶の回廊',no:'2-2',enemy:'インクノロイ',hp:64,x:0.20,y:0.18,desc:'記憶の文字をのみこみ、ゆらめくインクから生まれた怪異。',art:'ink_noroi_2-2.gif'},
+ {name:'封印の大書庫',no:'2-3',enemy:'忘却の番人',hp:72,x:0.20,y:0.18,desc:'誰も着ていない衣だけで大書庫を守り続ける、顔なき番人。',art:'forget_guardian_2-3.gif'},
+ {name:'岩鳴りの山道',no:'3-1',enemy:'棍棒の巨蟲',hp:81,x:0.28,y:0.26,desc:'硬い甲殻と巨大な棍棒で山道を揺らす巨蟲。',art:'club_giant_3-1.gif'},
  {name:'風鳴りの断壁',no:'3-2',enemy:'そうよくのりゅう',hp:89,x:0.28,y:0.26,desc:'※モンスターは背景確定後に正式設定予定。',art:LAYER_ASSETS.enemies.blue_dragon},
  {name:'ごうごうの山頂',no:'3-3',enemy:'ぐれんのりゅう',hp:98,x:0.28,y:0.26,desc:'※モンスターは背景確定後に正式設定予定。',art:LAYER_ASSETS.enemies.red_dragon},
  {name:'青翼の谷',no:'4-1',enemy:'そうよくのりゅう',hp:106,x:0.36,y:0.26,desc:'※モンスターは背景確定後に正式設定予定。',art:LAYER_ASSETS.enemies.blue_dragon},
@@ -1523,6 +1523,58 @@ function richAfterHitSfx(){
  }catch(e){}
 }
 </script>
+
+<style id="ver4101-polish">
+/* Ver.4.10.1 — sample-oriented battle HUD / timer / full-screen background / title polish */
+#battle{background:#07131c center/cover no-repeat!important;isolation:isolate}
+#battle:before{content:"";position:absolute;inset:0;z-index:-2;background:inherit;background-size:cover;background-position:center}
+#battle:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.08),transparent 42%,rgba(0,8,18,.20) 72%,rgba(0,8,18,.44));pointer-events:none}
+#battle .battleScene{background-color:transparent!important;height:calc(100dvh - 122px)!important;min-height:0!important}
+#battleTypingBox{position:absolute!important;z-index:20!important;left:2.3%!important;right:2.3%!important;bottom:12px!important;margin:0!important;min-height:102px!important;padding:12px 22px!important;border:1px solid rgba(102,180,238,.55)!important;border-radius:18px!important;background:linear-gradient(100deg,rgba(3,19,34,.88),rgba(4,31,54,.84),rgba(3,14,27,.91))!important;box-shadow:0 10px 32px #0009,inset 0 0 0 1px rgba(255,255,255,.04),0 0 28px rgba(37,139,222,.10)!important;backdrop-filter:blur(7px)}
+#battle .compactHelp,#battle .compactSpecialBtn{display:none!important}
+#battle .battleMessage{bottom:126px!important;left:17%!important;right:17%!important;min-height:42px!important;border:1px solid rgba(218,180,92,.72)!important;border-radius:24px!important;background:linear-gradient(90deg,rgba(4,10,15,.78),rgba(11,20,25,.90),rgba(4,10,15,.78))!important;color:#ffe4a0!important;box-shadow:0 5px 18px #0008!important}
+#battle .battleHud{top:18px!important;left:2.3%!important;right:2.3%!important;grid-template-columns:minmax(0,39%) minmax(0,39%)!important;gap:22%!important;align-items:start!important}
+#battle .heroHud,#battle .enemyHud{max-width:none!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+#battle .heroHud{min-height:112px!important;padding:6px 10px 5px 118px!important}
+#battle .heroHud:before{content:"";position:absolute;left:98px;right:0;top:4px;bottom:4px;z-index:-1;background:linear-gradient(90deg,rgba(3,17,28,.91),rgba(4,25,39,.78),rgba(3,12,20,.30));border-top:2px solid #d8ae4d;border-bottom:1px solid rgba(231,198,111,.55);clip-path:polygon(0 0,94% 0,100% 30%,100% 100%,0 100%)}
+#battle .heroHudIcon{left:0!important;width:108px!important;height:108px!important;border:4px solid #e8bd50!important;outline:3px solid #07131d!important;box-shadow:0 0 0 1px #fff0a5,0 0 22px rgba(255,194,47,.35)!important}
+#battle .heroHud .hudTop{height:35px!important;margin:0 0 3px!important;border-bottom:1px solid rgba(223,185,84,.58)!important}
+#battle .heroHud #heroHpName{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif!important;font-size:clamp(15px,1.45vw,21px)!important;text-shadow:0 2px 3px #000}
+#battle .heroHud #heroHpText{font-size:clamp(14px,1.35vw,20px)!important}
+#battle .heroHud .gaugeRow{grid-template-columns:68px minmax(0,1fr)!important;margin:3px 0!important}
+#battle .heroHud .gaugeLabel{font-size:14px!important;color:#fff2c7!important;text-shadow:0 2px 2px #000}
+#battle .heroHud .hpbar,#battle .heroHud .spbar{height:17px!important;border:2px solid #e9d79b!important;border-radius:12px!important;background:#081016!important;box-shadow:inset 0 2px 5px #000,0 0 0 1px #000!important}
+#battle .heroHud .hpfill{background:linear-gradient(#61e991,#20bf67)!important;box-shadow:inset 0 2px rgba(255,255,255,.25)}
+#battle .heroHud .spfill{background:linear-gradient(90deg,#f3c83e,#ff9f25)!important}
+#battle .enemyHud{position:relative!important;min-height:88px!important;padding:8px 8px 5px 14px!important;background:linear-gradient(270deg,rgba(3,17,28,.90),rgba(4,25,39,.76),rgba(3,12,20,.25))!important;border-top:2px solid #d8ae4d!important;border-bottom:1px solid rgba(231,198,111,.50)!important;clip-path:polygon(6% 0,100% 0,100% 100%,0 100%,0 28%)}
+#battle .enemyHud .hudTop{height:34px!important;border-bottom:1px solid rgba(223,185,84,.52)!important;font-weight:900!important}
+#battle .enemyHud .gaugeRow{grid-template-columns:58px minmax(0,1fr)!important}.enemyHud .hpbar{height:17px!important;border:2px solid #ead99e!important;border-radius:12px!important;background:#081016!important}.enemyHud .enemyfill{background:linear-gradient(#ff6b70,#ef3e4b)!important}
+#battle .battleTimer{top:9px!important;width:102px!important;height:102px!important;border:0!important;outline:0!important;border-radius:50%!important;background:radial-gradient(circle at 50% 45%,#18232a 0,#090e12 61%,#020405 100%)!important;color:#fff0b2!important;font-family:Georgia,"Times New Roman",serif!important;font-size:42px!important;box-shadow:0 0 0 2px #7d5a1e,0 0 0 5px #e0b64e,0 0 0 8px #19222a,0 7px 22px #000b,0 0 25px rgba(244,188,55,.26)!important}
+#battle .battleTimer:before,#battle .battleTimer:after{position:absolute!important;left:50%!important;transform:translateX(-50%) rotate(45deg)!important;width:18px!important;height:18px!important;background:#e0b64e!important;border:3px solid #111b22!important;box-shadow:0 0 8px #f1c654!important;font-size:0!important;content:""!important}
+#battle .battleTimer:before{top:-16px!important}#battle .battleTimer:after{bottom:-16px!important}
+#battle .battleTimer.danger{color:#ffb0a6!important;box-shadow:0 0 0 2px #7a241e,0 0 0 5px #e85d50,0 0 0 8px #251414,0 7px 22px #000b,0 0 30px rgba(255,68,48,.4)!important}
+/* Title: lighter, cleaner fantasy glass instead of a large dark block */
+#title .titleWrap{background-position:center!important;background-size:cover!important}
+#title .titleCard{width:min(590px,46vw)!important;padding:30px 34px 32px!important;border:1px solid rgba(239,203,113,.65)!important;border-radius:28px!important;background:linear-gradient(135deg,rgba(6,22,30,.66),rgba(7,24,32,.44) 65%,rgba(255,255,255,.04))!important;box-shadow:0 24px 70px #0008,inset 0 1px rgba(255,255,255,.12)!important;backdrop-filter:blur(12px) saturate(1.15)!important}
+#title .titleCard h1{font-size:clamp(56px,6.4vw,92px)!important;color:#fff1c7!important;text-shadow:0 3px 0 #8d6421,0 10px 30px #000a!important}
+#title .menu{border:0!important;padding:5px!important;background:transparent!important;max-width:none!important}
+#title .menu>div{margin:7px 0!important;padding:13px 16px!important;border:1px solid rgba(238,215,158,.20);border-radius:12px;background:rgba(5,18,24,.40);transition:.15s}
+#title .menu>div.sel{color:#fff5d2!important;border-color:#f2c95b!important;background:linear-gradient(90deg,rgba(122,78,18,.58),rgba(17,30,31,.54))!important;box-shadow:0 0 18px rgba(255,196,54,.18),inset 3px 0 #ffd563!important}
+@media(max-width:900px){#battle .battleHud{grid-template-columns:minmax(0,40%) minmax(0,40%)!important;gap:20%!important}#battle .heroHud{padding-left:102px!important;min-height:100px!important}#battle .heroHudIcon{width:94px!important;height:94px!important}#battle .heroHud:before{left:84px}#battle .battleTimer{width:88px!important;height:88px!important;font-size:37px!important}#battleTypingBox{min-height:96px!important}#battle .battleMessage{bottom:116px!important}#title .titleCard{width:54vw!important}}
+</style>
+<script id="ver4101-patch">
+(()=>{
+ const apply=()=>{
+  document.title='ぼくクエスト Ver.4.10.1';
+  document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.10.1');
+  const scene=document.getElementById('battleScene'),battle=document.getElementById('battle');
+  const sync=()=>{if(scene&&battle&&scene.style.backgroundImage){battle.style.backgroundImage=scene.style.backgroundImage;scene.style.backgroundImage='none'}};
+  if(scene){new MutationObserver(sync).observe(scene,{attributes:true,attributeFilter:['style']});setTimeout(sync,0)}
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
+</script>
+
 </body>
 </html><style id="ver48-modern-polish">
 /* Ver.4.8 modern title / name entry / larger battle portrait */

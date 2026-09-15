@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="ぼくクエスト">
 <meta name="theme-color" content="#000000">
-<title>ぼくクエスト Ver.4.6</title>
+<title>ぼくクエスト Ver.4.7</title>
 <style>
 :root{--fg:#fff;--dim:#aaa;--gold:#ffd34e;--green:#44cf77;--red:#ff5757;--blue:#62a8ff;--panel:#050505}
 *{box-sizing:border-box}
@@ -590,6 +590,31 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 
 /* Ver.4.6 portraits / HUD */
 .modernPortrait{height:210px!important;overflow:hidden;border-radius:12px 12px 4px 4px;background:#07111e!important}.modernPortrait img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 38%!important;display:block!important}.heroHudIdentity{display:flex;align-items:center;gap:9px;min-width:0}.heroHudIcon{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid #e8c875;box-shadow:0 0 0 2px rgba(0,0,0,.65),0 0 12px rgba(232,200,117,.25);flex:0 0 auto}.heroHud .hudTop{align-items:center}.heroHud #heroHpName{white-space:nowrap}.battleTimer{z-index:12!important}.battleHud{z-index:11!important}.heroHud,.enemyHud{max-width:38vw}.battleTimer{left:50%!important;transform:translateX(-50%)!important}.battleScene{border-top:0!important}.battleScene:before{display:none!important}
+
+/* Ver.4.7 battle presentation */
+#battle{padding:0 0 6px!important;overflow:hidden}
+#battle .battleScene{height:min(73dvh,760px)!important;min-height:560px!important;width:100%!important;margin:0!important;border:0!important;background-size:cover!important;background-position:center center!important}
+#battle .battleShade{background:linear-gradient(180deg,rgba(0,0,0,.14),transparent 22%,transparent 72%,rgba(0,0,0,.12))!important}
+#battle .battleHud{left:2.2%!important;right:2.2%!important;top:12px!important;grid-template-columns:minmax(0,38%) minmax(0,38%)!important;justify-content:space-between!important;gap:15%!important}
+#battle .mini{padding:6px 10px!important;background:linear-gradient(180deg,rgba(5,13,20,.88),rgba(4,8,12,.74))!important;border:1px solid rgba(231,196,112,.75)!important;border-radius:12px!important;box-shadow:0 5px 18px rgba(0,0,0,.42),inset 0 0 0 1px rgba(255,255,255,.08)!important}
+#battle .hudTop{min-height:42px!important;margin-bottom:2px!important}
+#battle .heroHudIcon{width:58px!important;height:58px!important;margin:-4px 2px -4px -2px;border:2px solid #e6c56c!important;box-shadow:0 0 0 3px rgba(7,15,23,.92),0 0 14px rgba(255,210,94,.34)!important}
+#battle .heroHudIdentity{gap:10px!important;font-size:clamp(13px,1.35vw,18px)!important}
+#battle .hudNumber{font-size:clamp(13px,1.3vw,18px)!important}
+#battle .gaugeRow{grid-template-columns:68px minmax(0,1fr)!important;gap:5px!important;margin:2px 0!important}
+#battle .gaugeLabel{font-size:12px!important;color:#f4e3ba!important}
+#battle .hpbar,#battle .spbar{height:14px!important;border:1px solid rgba(255,255,255,.7)!important;border-radius:8px!important;overflow:hidden!important;background:rgba(0,0,0,.72)!important;box-shadow:inset 0 1px 4px #000!important}
+#battle .battleTimer{top:8px!important;width:84px!important;height:84px!important;border:2px solid #e8c36a!important;outline:1px solid rgba(255,224,139,.45)!important;background:radial-gradient(circle,#152330 0,#080c11 68%)!important;box-shadow:0 0 0 5px rgba(5,10,15,.72),0 0 24px rgba(232,195,106,.25)!important;font-family:Georgia,serif!important;font-size:36px!important}
+#battle .battleTimer:before{content:'✦';position:absolute;top:-13px;font-size:18px;color:#f1ce72;text-shadow:0 0 8px #f1ce72}
+#battle .battleMessage{left:18%!important;right:18%!important;bottom:1.5%!important;min-height:0!important;padding:7px 18px!important;border:1px solid rgba(226,192,111,.82)!important;border-radius:22px!important;background:linear-gradient(90deg,rgba(5,10,15,.72),rgba(10,16,22,.9),rgba(5,10,15,.72))!important;box-shadow:0 4px 14px rgba(0,0,0,.45)!important;text-align:center!important;font-size:clamp(14px,1.5vw,20px)!important;line-height:1.25!important}
+#battle .heroToken.heroSprite{bottom:9%!important;max-height:58%!important}
+#battle #enemyPortrait{bottom:7%!important;height:59%!important}
+#battle .compactTyping{margin:4px 2% 0!important;padding:7px 14px!important;gap:3px!important;border-radius:12px!important;background:linear-gradient(90deg,#07111c,#0b2033,#07111c)!important;border:1px solid rgba(95,170,221,.5)!important;box-shadow:inset 0 0 24px rgba(40,135,205,.08)!important}
+#battle .typingRow{grid-template-columns:95px minmax(0,1fr)!important;gap:8px!important;min-height:28px!important}
+#battle .typingRow .typingLabel{font-size:12px!important}
+#battle .typingRow .typingValue{font-size:clamp(21px,2.5vw,34px)!important;line-height:1.05!important}
+@media(max-width:900px){#battle .battleHud{grid-template-columns:minmax(0,40%) minmax(0,40%)!important;gap:12%!important}#battle .heroHudIcon{width:52px!important;height:52px!important}#battle .battleTimer{width:72px!important;height:72px!important;font-size:31px!important}#battle .battleMessage{left:7%!important;right:7%!important}#battle .battleScene{height:69dvh!important;min-height:500px!important}}
+
 </style>
 </head>
 <body>
@@ -599,7 +624,7 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
 <section id="title" class="screen active">
   <div class="titleWrap"><div class="titleCard">
     <h1>ぼくクエスト</h1>
-    <div class="subtitle">― ことばを とりもどす ぼうけん ― <small>Ver.4.6</small></div>
+    <div class="subtitle">― ことばを とりもどす ぼうけん ― <small>Ver.4.7</small></div>
     <div class="menu" id="titleMenu">
       <div class="sel" data-action="new">ぼうけんを はじめる <span class="key">[N]</span></div>
       <div data-action="continue">つづきから <span class="key">[C]</span></div>

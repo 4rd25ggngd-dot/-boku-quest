@@ -2523,3 +2523,147 @@ html,body{width:100%;height:100%;min-height:100dvh;overflow:hidden}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
 })();
 </script>
+
+
+<!-- ===== Ver.4.12.1 battle polish / iPad fullscreen stability ===== -->
+<style id="ver4121-battle-polish">
+/* Player field sprite containers now use the Hero's battle footprint and ground line. */
+#battle #heroToken.heroSprite,
+#battle #heroToken.warriorAnimated,
+#battle #heroToken.bq412GifHero{
+  width:min(32%,305px)!important;
+  height:61%!important;
+  max-height:61%!important;
+  bottom:14.5%!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  transform-origin:50% 100%!important;
+}
+@media(max-width:900px){
+  #battle #heroToken.heroSprite,
+  #battle #heroToken.warriorAnimated,
+  #battle #heroToken.bq412GifHero{
+    width:min(32%,305px)!important;
+    height:61%!important;
+    max-height:61%!important;
+    bottom:14.5%!important;
+  }
+}
+/* Mage casts in place: disable the generic melee lunge animation. */
+#battle #heroToken.bq4121MageStationary.heroAttack{
+  animation:none!important;
+  transform:none!important;
+}
+/* Keep the app visually viewport-filling even if Safari chrome is visible. */
+html,body{width:100%!important;height:100%!important;min-height:100dvh!important;overflow:hidden!important;padding:0!important;margin:0!important}
+#game{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100dvh!important;max-width:none!important;margin:0!important;border:0!important;padding:0!important;overflow:hidden!important;background:#000!important}
+.screen.active{min-height:100dvh!important;height:100dvh!important;overflow:hidden!important}
+/* Native input is intentionally not focused during physical-keyboard battles. */
+#battleInput{position:fixed!important;left:-10000px!important;top:-10000px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+
+/* Mage-only lightning impact effect. */
+.mageLightningFx{position:absolute;z-index:18;width:100px;height:220px;pointer-events:none;transform:translate(-50%,-82%);filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 14px #8edcff);animation:mageLightningFade .34s ease-out forwards}
+.mageLightningFx .bolt{position:absolute;left:38px;top:0;width:24px;height:185px;background:linear-gradient(#fff,#e7fbff 45%,#7ed7ff 80%,rgba(126,215,255,0));clip-path:polygon(55% 0,100% 0,66% 34%,96% 34%,44% 100%,56% 56%,20% 56%);transform:skewX(-7deg);animation:mageBoltJitter .18s steps(2,end) 2}
+.mageLightningFx .bolt:before,.mageLightningFx .bolt:after{content:"";position:absolute;background:#dff8ff;filter:blur(.2px)}
+.mageLightningFx .bolt:before{width:10px;height:92px;left:-18px;top:48px;clip-path:polygon(50% 0,100% 0,60% 42%,100% 42%,20% 100%,42% 56%,0 56%)}
+.mageLightningFx .bolt:after{width:8px;height:72px;right:-16px;top:76px;clip-path:polygon(45% 0,100% 0,58% 40%,100% 40%,10% 100%,40% 58%,0 58%)}
+.mageLightningFx .impact{position:absolute;left:50%;bottom:20px;width:108px;height:45px;transform:translateX(-50%);border:4px solid rgba(224,249,255,.95);border-radius:50%;box-shadow:0 0 12px #fff,0 0 28px #82d9ff,inset 0 0 18px #a9e9ff;animation:mageImpactRing .34s ease-out forwards}
+.mageLightningFx .flash{position:absolute;left:50%;bottom:15px;width:145px;height:145px;transform:translate(-50%,50%);border-radius:50%;background:radial-gradient(circle,#fff 0 7%,rgba(210,245,255,.9) 8% 18%,rgba(89,194,255,.35) 35%,transparent 70%);mix-blend-mode:screen;animation:mageImpactFlash .28s ease-out forwards}
+@keyframes mageBoltJitter{0%{transform:translateX(-4px) skewX(-7deg);opacity:.95}50%{transform:translateX(5px) skewX(4deg);opacity:1}100%{transform:translateX(0) skewX(-7deg);opacity:.92}}
+@keyframes mageImpactRing{0%{opacity:1;transform:translateX(-50%) scale(.3)}100%{opacity:0;transform:translateX(-50%) scale(1.45)}}
+@keyframes mageImpactFlash{0%{opacity:1;transform:translate(-50%,50%) scale(.25)}100%{opacity:0;transform:translate(-50%,50%) scale(1.25)}}
+@keyframes mageLightningFade{0%,60%{opacity:1}100%{opacity:0}}
+</style>
+<script id="ver4121-runtime-patch">
+(()=>{
+ const isFS=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+ function battleActive(){return document.getElementById('battle')?.classList.contains('active')}
+ function mageActive(){return state?.job==='まほうつかい' && battleActive()}
+
+ // Prevent hidden text-field focus from kicking iPad Safari out of fullscreen.
+ // Physical keyboard input already comes from the document-level keydown handler.
+ function installBattleFocusGuard(){
+   const inp=document.getElementById('battleInput');
+   if(!inp||inp.__bq4121Guard)return;
+   inp.__bq4121Guard=true;
+   const nativeFocus=inp.focus.bind(inp);
+   inp.focus=function(opts){
+     if(battleActive() && (window.bqFullscreenWanted || isFS())) return;
+     return nativeFocus(opts);
+   };
+   inp.blur(); inp.tabIndex=-1;
+ }
+
+ function markMageStationary(){
+   const el=document.getElementById('heroToken');
+   if(!el)return;
+   el.classList.toggle('bq4121MageStationary', state?.job==='まほうつかい');
+   if(state?.job==='まほうつかい'){
+     el.classList.remove('heroAttack');
+     el.style.transform='none';
+   } else {
+     el.classList.remove('bq4121MageStationary');
+     el.style.removeProperty('transform');
+   }
+ }
+
+ function mageLightning(strong=false){
+   if(!mageActive())return;
+   const scene=document.getElementById('battleScene'), enemy=document.getElementById('enemyPortrait');
+   if(!scene||!enemy)return;
+   const sr=scene.getBoundingClientRect(), er=enemy.getBoundingClientRect();
+   const fx=document.createElement('div');
+   fx.className='mageLightningFx';
+   const x=(er.left+er.width*.5)-sr.left;
+   const y=(er.top+er.height*.54)-sr.top;
+   fx.style.left=x+'px'; fx.style.top=y+'px';
+   if(strong) fx.style.transform='translate(-50%,-82%) scale(1.22)';
+   fx.innerHTML='<i class="bolt"></i><i class="flash"></i><i class="impact"></i>';
+   scene.appendChild(fx);
+   setTimeout(()=>fx.remove(),430);
+ }
+
+ // Mage: stationary casting and mage-only lightning on each actual enemy hit.
+ const oldCharHit=window.charHitEffect;
+ if(typeof oldCharHit==='function'&&!oldCharHit.__bq4121){
+   const wrapped=function(...args){
+     const r=oldCharHit.apply(this,args);
+     if(mageActive())mageLightning(false);
+     return r;
+   }; wrapped.__bq4121=true; window.charHitEffect=wrapped;
+ }
+ const oldPlayerAttack=window.playerAttackEffect;
+ if(typeof oldPlayerAttack==='function'&&!oldPlayerAttack.__bq4121){
+   const wrapped=function(...args){
+     const mage=state?.job==='まほうつかい';
+     const r=oldPlayerAttack.apply(this,args);
+     if(mage){markMageStationary();mageLightning(true);requestAnimationFrame(markMageStationary)}
+     return r;
+   }; wrapped.__bq4121=true; window.playerAttackEffect=wrapped;
+ }
+ const oldSuccess=window.successAttack;
+ if(typeof oldSuccess==='function'&&!oldSuccess.__bq4121){
+   const wrapped=function(...args){
+     const mage=state?.job==='まほうつかい';
+     const r=oldSuccess.apply(this,args);
+     if(mage){markMageStationary();requestAnimationFrame(markMageStationary)}
+     return r;
+   }; wrapped.__bq4121=true; window.successAttack=wrapped;
+ }
+ const oldStart=window.startBattle;
+ if(typeof oldStart==='function'&&!oldStart.__bq4121){
+   const wrapped=function(...args){
+     const r=oldStart.apply(this,args);
+     setTimeout(()=>{installBattleFocusGuard();markMageStationary();document.getElementById('battleInput')?.blur()},30);
+     return r;
+   }; wrapped.__bq4121=true; window.startBattle=wrapped;
+ }
+
+ function install(){
+   installBattleFocusGuard();markMageStationary();
+   document.title='ぼくクエスト Ver.4.12.1';
+   document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.12.1');
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
+})();
+</script>

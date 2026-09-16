@@ -982,9 +982,22 @@ const normalWordPools=[
  ['がんぽうのきょじん','いわのからだ','じだんだをふむ','だいちがゆれる','やまのちから'],
  ['そうよくのりゅう','あおいつばさ','そらをきりさく','たかくはばたく','たにかぜをこえる'],
  ['ぐれんのりゅう','あかいつばさ','つよくはばたく','ほのおをまとう','えものをいかくする'],
+ ['そうきょくりゅうあずらーど','ふたつのつばさ','あおとあかのちから','そうきょくのほうこう','りゅうのもんをこえる'],
+ ['ぶぶぶざむらい','しろをまもる','ことばをきりひらく','かたなをかまえる','いざしょうぶ'],
+ ['こんごうのおに','おうざをまもる','おもいよろい','ちからをためる','しずけさをやぶる'],
  ['しゅうばくのれいかく','たましいがあつまる','むすうのこえがひびく','やみのうずをぬける','こころをつよくたもつ'],
- ['つまぶくろのあくま','すべてをのみこむ','よくぼうにまけない','ふくらむふくろをかわす','ことばをとりもどす'],
- ['てんらいのちょうりゅう','いかずちがそらをさく','あらしのなかをすすむ','ひかりよりはやくうつ','さいごのことばをつなぐ']
+ ['ことばやどかり','わすれられたはまべ','ことばのかけら','おおきなはさみ','なみうちぎわをすすむ'],
+ ['しずかなうみ','ことばがしずむ','あおいなみ','ふかいみず','ひかりをさがす'],
+ ['かいていしんでん','しずかなみち','ふるいとびら','うみのそこ','ことばをつなぐ'],
+ ['ときわすれのいせき','ふるいいし','ときをこえる','いせきのおく','きおくをたどる'],
+ ['ことばのはらにわ','しろいき','ひかりのつぶ','はじまりのこえ','おもいをつたえる'],
+ ['しげんのひ','ことばのはじまり','ふるいきおく','こころのこえ','だれかにつたえる'],
+ ['ぞんび','くずれゆくきょうかい','くらいみち','よみがえるかげ','まえへすすむ'],
+ ['むめいのぼひょう','なまえをさがす','しずかなはか','きえたきおく','こえをよぶ'],
+ ['きょむのしんぞう','くらいやみ','こころをまもる','ことばをはなさない','ひかりをつかむ'],
+ ['むおんのせかい','しずかなそら','こえのないみち','ひとりであるく','ことばをおもう'],
+ ['ことばのみなもと','ひかりがうまれる','おもいがつながる','こえをとどける','はじまりへすすむ'],
+ ['はじまりのばしょ','さいごのことば','あさひがのぼる','だれかにとどける','ものがたりをつなぐ']
 ];
 const hardWordPools=normalWordPools.map((p,i)=>p.map(w=>w+(i<3?'をすすむ':'をとりもどす')));
 
@@ -1321,7 +1334,7 @@ function startBattle(){const st=stageInfo();battleFinishing=false;updateMeta(m=>
  heroEl.src=state.job==='せんし'?WARRIOR_MOTIONS.idle[0]:(state.job==='ゆうしゃ'?HERO_MOTIONS.idle[0]:LAYER_ASSETS.heroes[heroKey]);
  if(state.job==='せんし')setTimeout(warriorIdle,50); else if(state.job==='ゆうしゃ')setTimeout(heroIdleMotion,50);$('#enemyHpName').textContent=st.enemy;const ep=$('#enemyPortrait');
  const enemyArt=st.art || ((st.enemy.includes('コトバケ')||st.enemy.includes('メモリ'))?LAYER_ASSETS.slime:''); ep.dataset.stage=st.no; ep.classList.remove('enemyDefeated'); ep.style.opacity='';
- if(enemyArt){ep.src=enemyArt;ep.classList.add('show')}else{ep.classList.remove('show');ep.removeAttribute('src')}state.seen[dexId(st.enemy)]=true;updateBattle();battleSay('1文字ずつ こうげき！ 99秒以内に たおそう！');show('battle');startWhisperEnemyIdle();startBattleTimer();startBattleBgm4112();playBattleStartSe4112();setTimeout(()=>{if(!(document.fullscreenElement||document.webkitFullscreenElement))$('#battleInput').focus({preventScroll:true})},100)}
+ if(enemyArt){ep.src=enemyArt;ep.classList.add('show')}else{ep.classList.remove('show');ep.removeAttribute('src')}state.seen[dexId(st.enemy)]=true;updateBattle();battleSay('1文字ずつ こうげき！ 99秒以内に たおそう！');show('battle');startWhisperEnemyIdle();startBattleTimer();startBattleBgm4112();playBattleStartSe4112();setTimeout(()=>{if(!(document.fullscreenElement||document.webkitFullscreenElement)&&!window.bqFullscreenWanted)$('#battleInput').focus({preventScroll:true})},100)}
 
 function activeTargets38(word,typed){
  const all=romajiVariants(word), matches=all.filter(x=>x.startsWith(typed));
@@ -1502,10 +1515,10 @@ $('#chapterNodes')?.addEventListener('click',e=>{const b=e.target.closest('[data
 $('#storyArchiveList')?.addEventListener('click',e=>{const b=e.target.closest('[data-story]');if(!b||b.disabled)return;archiveIndex=+b.dataset.story;renderStoryArchive()});
 
 $('#stageList').addEventListener('click',e=>{const it=e.target.closest('.stageItem');if(!it)return;const i=$$('#stageList .stageItem').indexOf(it)+1;if(i<=state.stage){state.selectedStage=i;renderMap()}});
-$('#battleTypingBox').onclick=()=>{if(!(document.fullscreenElement||document.webkitFullscreenElement))$('#battleInput').focus({preventScroll:true})};$('#battleScene').onclick=()=>{if(!(document.fullscreenElement||document.webkitFullscreenElement))$('#battleInput').focus({preventScroll:true})};$('#specialBtn').onclick=special;
+$('#battleTypingBox').onclick=()=>{if(!(document.fullscreenElement||document.webkitFullscreenElement)&&!window.bqFullscreenWanted)$('#battleInput').focus({preventScroll:true})};$('#battleScene').onclick=()=>{if(!(document.fullscreenElement||document.webkitFullscreenElement)&&!window.bqFullscreenWanted)$('#battleInput').focus({preventScroll:true})};$('#specialBtn').onclick=special;
 $('#practiceBox').onclick=()=>$('#practiceInput').focus({preventScroll:true});
 $('#dexGrid').addEventListener('click',e=>{const c=e.target.closest('.dexCard');if(!c)return;state.dexIndex=+c.dataset.i;renderBestiary()});
-function refocusTyping(){setTimeout(()=>{const id=$('.screen.active')?.id;if(id==='battle'){if(!(document.fullscreenElement||document.webkitFullscreenElement))$('#battleInput').focus({preventScroll:true})}else if(id==='practice')$('#practiceInput').focus({preventScroll:true})},180)}
+function refocusTyping(){setTimeout(()=>{const id=$('.screen.active')?.id;if(id==='battle'){if(!(document.fullscreenElement||document.webkitFullscreenElement)&&!window.bqFullscreenWanted)$('#battleInput').focus({preventScroll:true})}else if(id==='practice')$('#practiceInput').focus({preventScroll:true})},180)}
 $('#fullscreenBtn').onclick=()=>{document.body.classList.toggle('fitMode');setTimeout(refocusTyping,120)};
 window.addEventListener('focus',refocusTyping);
 window.addEventListener('resize',refocusTyping);
@@ -1662,7 +1675,7 @@ function richAfterHitSfx(){
  const isFS=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
  function stamp(){document.title='ぼくクエスト Ver.4.11.5';document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.11.5')}
  function installTwin(){
-   try{const st=STAGES.find(x=>x.no==='4-3');if(st){st.enemy='双極竜アズラード';st.desc='蒼翼と紅蓮、二つの竜の力を一体に宿す双頭の門番竜。';st.art=twinGif}}catch(e){console.warn('twin dragon install',e)}
+   try{const st=stages.find(x=>x.no==='4-3');if(st){st.enemy='双極竜アズラード';st.desc='蒼翼と紅蓮、二つの竜の力を一体に宿す双頭の門番竜。';st.art=twinGif}}catch(e){console.warn('twin dragon install',e)}
  }
  function syncTwinIcon(){const ep=document.getElementById('enemyPortrait'),ic=document.getElementById('enemyHudIcon');if(ep&&ic&&ep.dataset.stage==='4-3')ic.src=twinIcon}
  function apply(){
@@ -2288,7 +2301,7 @@ html,body{width:100%;height:100%;min-height:100dvh;overflow:hidden}
  }
  function patchStages(){
    try{
-    const set=(no,data)=>{const st=STAGES.find(x=>x.no===no);if(st)Object.assign(st,data)};
+    const set=(no,data)=>{const st=stages.find(x=>x.no===no);if(st)Object.assign(st,data)};
     set('4-3',{enemy:'双極竜アズラード',art:A.twin,desc:'蒼翼と紅蓮、二つの竜の力を一体に宿す双頭の門番竜。'});
     set('5-2',{enemy:'金剛の鬼',art:A.oniIdle,desc:'黄金の装甲をまとい、静寂の王座を守る剛力の鬼。'});
     set('5-3',{enemy:'終爆の霊核',art:A.core,desc:'ことばの城の最奥で脈動する、強大な霊核。'});
@@ -2337,3 +2350,89 @@ html,body{width:100%;height:100%;min-height:100dvh;overflow:hidden}
 })();
 </script>
 
+
+<style id="ver4118-title-fullscreen-fixes">
+/* Ver.4.11.8 — richer fantasy title */
+#title .titleWrap{
+  min-height:100dvh!important;height:100dvh!important;box-sizing:border-box!important;
+  padding:max(5vh,env(safe-area-inset-top)) max(6vw,env(safe-area-inset-right)) max(5vh,env(safe-area-inset-bottom)) max(6vw,env(safe-area-inset-left))!important;
+  background:
+    radial-gradient(circle at 72% 36%,rgba(111,196,255,.16),transparent 24%),
+    linear-gradient(90deg,rgba(2,8,14,.74) 0%,rgba(2,9,14,.44) 44%,rgba(2,8,14,.08) 72%,rgba(0,0,0,.32) 100%),
+    url("asset_25.webp") center/cover no-repeat!important;
+}
+#title .titleWrap:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.38),transparent 20%,transparent 72%,rgba(0,0,0,.62)),radial-gradient(ellipse at center,transparent 48%,rgba(0,0,0,.42) 100%);z-index:1}
+#title .titleWrap:after{content:""!important;position:absolute!important;inset:0!important;pointer-events:none;background:linear-gradient(110deg,transparent 0 18%,rgba(255,223,143,.045) 34%,transparent 49%)!important;z-index:1!important}
+#title .titleCard{
+  position:relative!important;z-index:3!important;width:min(600px,52vw)!important;max-width:none!important;
+  padding:30px 34px 28px!important;border:1px solid rgba(245,211,125,.58)!important;border-radius:24px!important;
+  background:linear-gradient(145deg,rgba(5,18,26,.82),rgba(5,16,23,.61) 68%,rgba(53,36,13,.28))!important;
+  box-shadow:0 30px 80px rgba(0,0,0,.58),inset 0 1px rgba(255,255,255,.13),0 0 0 1px rgba(24,13,3,.55)!important;
+  backdrop-filter:blur(12px) saturate(1.12)!important;overflow:visible;
+}
+#title .titleCard:before{content:"✦";position:absolute;left:-22px;top:-22px;width:54px;height:54px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,220,133,.75);background:radial-gradient(circle,#8d6425,#30200c 70%);color:#ffe6a3;font-size:25px;box-shadow:0 0 24px rgba(255,194,66,.32),0 7px 20px #0008}
+#title .titleCard:after{content:"◆  B O K U   Q U E S T  ◆";display:block;text-align:center;margin:16px 0 -5px;color:rgba(255,224,153,.66);font:700 10px/1.2 Georgia,serif;letter-spacing:.30em}
+#title .titleKicker{font-size:12px!important;letter-spacing:.20em!important;color:#f8e8bf!important;margin:0 0 11px!important;text-shadow:0 2px 8px #000!important}
+#title .titleCard h1{
+  margin:0!important;font-family:"Yu Mincho","Hiragino Mincho ProN",serif!important;font-weight:900!important;
+  font-size:clamp(58px,7vw,96px)!important;line-height:.98!important;letter-spacing:.06em!important;
+  color:#fff3ca!important;-webkit-text-stroke:1px rgba(91,55,13,.55);
+  text-shadow:0 3px 0 #8b5d18,0 7px 0 rgba(45,25,6,.72),0 15px 34px #000!important;
+}
+#title .subtitle{margin:18px 0 22px!important;padding:12px 0 0!important;border-top:1px solid rgba(242,202,103,.56)!important;color:#f5dfad!important;font-size:13px!important;letter-spacing:.10em!important;text-align:left!important}
+#title .subtitle small{float:right;color:#d7bd7c;letter-spacing:.06em}
+#title .menu{width:100%!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px 10px!important;padding:0!important}
+#title .menu>div{position:relative;margin:0!important;min-height:46px;box-sizing:border-box;padding:11px 14px 11px 18px!important;border:1px solid rgba(224,202,150,.22)!important;border-radius:10px!important;background:linear-gradient(90deg,rgba(5,18,25,.88),rgba(8,26,34,.63))!important;font-size:16px!important;box-shadow:inset 0 1px rgba(255,255,255,.04);transform:none!important}
+#title .menu>div:before{content:"";position:absolute;left:7px;top:50%;width:4px;height:4px;transform:translateY(-50%) rotate(45deg);background:#8e7b54}
+#title .menu>div.sel{color:#fff4cf!important;border-color:#f2ca64!important;background:linear-gradient(90deg,rgba(118,76,17,.82),rgba(20,43,47,.77))!important;box-shadow:0 0 22px rgba(255,191,54,.22),inset 3px 0 #ffd35e!important;transform:translateY(-1px)!important}
+#title .menu>div.sel:before{background:#ffe08a;box-shadow:0 0 8px #ffc94e}
+#title .key{font-size:10px!important;opacity:.52!important}#title .help{margin:13px 0 0!important;text-align:center!important;font-size:11px!important;opacity:.62!important}
+@media(max-width:900px){#title .titleCard{width:min(620px,61vw)!important;padding:25px 28px 23px!important}#title .titleCard h1{font-size:clamp(50px,7.5vw,78px)!important}#title .menu>div{font-size:14px!important;min-height:42px!important;padding:9px 11px 9px 16px!important}}
+
+/* Keep stage selection itself visually full-viewport even when Safari chrome briefly reappears. */
+#stageMap.active,#stageMap .stageSelectHero{width:100%!important;height:100dvh!important;min-height:100dvh!important;max-height:none!important}
+#stageMap .stageSelectHero{position:absolute!important;inset:0!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important}
+</style>
+<script id="ver4118-runtime-fixes">
+(()=>{
+ const isFS=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+ window.bqFullscreenWanted = localStorage.getItem('bqFullscreenWanted')==='1' || isFS();
+ function saveWanted(v){window.bqFullscreenWanted=!!v;localStorage.setItem('bqFullscreenWanted',v?'1':'0')}
+ function requestFSFromGesture(){
+   if(!window.bqFullscreenWanted||isFS())return;
+   const g=document.getElementById('game'),req=g&&(g.requestFullscreen||g.webkitRequestFullscreen);
+   if(!req)return;
+   try{const r=req.call(g);if(r&&typeof r.catch==='function')r.catch(()=>{});}catch(_){ }
+ }
+ function installFullscreenPersistence(){
+   const fsBtn=document.getElementById('optFullscreenBtn');
+   if(fsBtn)fsBtn.addEventListener('click',()=>saveWanted(!isFS()),true);
+   // These actions are genuine user gestures, so Safari permits restoring native fullscreen here.
+   ['openChapterBtn','adventureBtn','stagePrevBtn','stageNextBtn'].forEach(id=>{
+     document.getElementById(id)?.addEventListener('click',requestFSFromGesture,false);
+   });
+   document.getElementById('detailStageList')?.addEventListener('click',requestFSFromGesture,false);
+   document.getElementById('detailStagePoints')?.addEventListener('click',requestFSFromGesture,false);
+   document.addEventListener('keydown',e=>{
+     const id=document.querySelector('.screen.active')?.id;
+     if((id==='map'&&e.key==='Enter')||(id==='stageMap'&&(e.key==='Enter'||e.key.toLowerCase()==='a')))requestFSFromGesture();
+   },true);
+ }
+ function repairFinalizedStages(){
+   const payload=id=>(document.getElementById(id)?.textContent||'').trim();
+   const data=(kind,id)=>`data:image/${kind};base64,${payload(id)}`;
+   const set=(no,obj)=>{const st=stages.find(x=>x.no===no);if(st)Object.assign(st,obj)};
+   set('4-3',{enemy:'双極竜アズラード',art:data('gif','bq4116_twin_gif'),desc:'蒼翼と紅蓮、二つの竜の力を一体に宿す双頭の門番竜。'});
+   set('5-2',{enemy:'金剛の鬼',art:data('gif','bq4116_oni_idle'),desc:'黄金の装甲をまとい、静寂の王座を守る剛力の鬼。'});
+   set('5-3',{enemy:'終爆の霊核',art:data('gif','bq4116_core_gif'),desc:'ことばの城の最奥で脈動する、強大な霊核。'});
+   set('6-1',{enemy:'コトバヤドカリ',art:data('gif','bq4117_crab_gif'),desc:'忘却の浜辺に流れ着いた、ことばの欠片を背負うヤドカリ。'});
+   set('8-1',{enemy:'ゾンビ',art:data('gif','bq4116_zombie_gif'),desc:'崩れゆく境界をさまよう、ことばを失った不気味な影。'});
+ }
+ function install(){
+   document.title='ぼくクエスト Ver.4.11.8';
+   document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.11.8');
+   repairFinalizedStages();installFullscreenPersistence();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
+})();
+</script>

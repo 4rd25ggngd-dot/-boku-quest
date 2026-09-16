@@ -673,6 +673,8 @@ h1,h2,h3{margin:0}.gold{color:var(--gold)}.dim{color:var(--dim)}
     <div class="optionRow"><span>サウンド</span><button id="optSoundBtn">ON</button></div>
     <div class="optionRow"><span>音のテスト</span><button id="optSoundTestBtn">テスト</button></div>
     <div class="optionRow"><span>画面表示</span><button id="optFitBtn">画面フィット</button></div>
+    <div class="optionRow"><span>全画面表示</span><button id="optFullscreenBtn">全画面にする</button></div>
+    <div id="fullscreenStatus" class="fullscreenStatus" aria-live="polite">Safariの表示を隠して、ゲーム画面だけを表示します。</div>
     <div class="optionRow"><span>入力補助</span><button id="optAssistCaseBtn">小文字</button></div>
     <p class="help">Backspace：タイトルにもどる</p>
   </div>
@@ -1986,4 +1988,79 @@ function startBattleBgm4112(){
 function stopBattleBgm4112(){if(bqBgm4112Timer){clearInterval(bqBgm4112Timer);bqBgm4112Timer=null}bqBgm4112Nodes.forEach(n=>{try{n.stop()}catch(e){}});bqBgm4112Nodes=[]}
 function playBattleStartSe4112(){[392,523.25,659.25].forEach((f,i)=>bqTone4112(f,.10,'square',.035,i*.075))}
 function playVictoryFanfare4112(){stopBattleBgm4112();[523.25,659.25,783.99,1046.5].forEach((f,i)=>bqTone4112(f,.28,'triangle',.055,i*.12));setTimeout(()=>{[659.25,783.99,1046.5].forEach((f,i)=>bqTone4112(f,.42,'sine',.04,i*.035))},520)}
+</script>
+
+
+<style id="ver4113-fullscreen-option">
+/* Ver.4.11.3 — iPad Safari: fullscreen is available from Options only. */
+.fullscreenStatus{
+  margin:7px 0 3px;padding:9px 11px;border-left:3px solid #d7b45a;
+  background:rgba(215,180,90,.08);color:#c9d6df;font-size:12px;line-height:1.55;
+}
+#game:fullscreen,#game:-webkit-full-screen{
+  width:100vw!important;height:100dvh!important;min-height:0!important;max-width:none!important;
+  margin:0!important;border:0!important;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)!important;
+  overflow:hidden!important;background:#02070d!important;
+}
+#game.fullscreenActive{width:100%!important;height:100dvh!important;min-height:0!important;overflow:hidden!important}
+/* A very thin safe-edge guide makes it obvious that the whole game viewport is visible. */
+#game.fullscreenActive:after{
+  content:"";position:fixed;z-index:9998;pointer-events:none;
+  top:max(2px,env(safe-area-inset-top));right:max(2px,env(safe-area-inset-right));
+  bottom:max(2px,env(safe-area-inset-bottom));left:max(2px,env(safe-area-inset-left));
+  border:1px solid rgba(241,204,112,.24);box-sizing:border-box;
+}
+#game.fullscreenActive>.screen{width:100%!important;height:100%!important;min-height:0!important;overflow:hidden!important}
+@media (max-height:720px) and (orientation:landscape){
+  #game.fullscreenActive #battle .battleHud{top:18px!important}
+  #game.fullscreenActive #battle .battleTimer{top:20px!important}
+  #game.fullscreenActive #battleTypingBox{bottom:10px!important}
+}
+</style>
+<script id="ver4113-fullscreen-patch">
+(()=>{
+ const game=()=>document.getElementById('game');
+ const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement||null;
+ const btn=()=>document.getElementById('optFullscreenBtn');
+ const status=()=>document.getElementById('fullscreenStatus');
+ function isFS(){return !!fsEl()}
+ function paintFS(){
+   const on=isFS(),g=game(),b=btn(),s=status();
+   if(g)g.classList.toggle('fullscreenActive',on);
+   if(b)b.textContent=on?'全画面を終了':'全画面にする';
+   if(s)s.textContent=on?'全画面表示中です。画面端の細い枠の内側が、ゲームの表示範囲です。':'Safariの表示を隠して、ゲーム画面だけを表示します。';
+   if(typeof renderOptions==='function'){
+     const f=document.getElementById('optFitBtn');
+     if(f)f.textContent=document.body.classList.contains('fitMode')?'標準表示':'画面フィット';
+   }
+ }
+ async function toggleFS(){
+   const g=game(),s=status(); if(!g)return;
+   try{
+     if(isFS()){
+       const exit=document.exitFullscreen||document.webkitExitFullscreen;
+       if(exit){const r=exit.call(document);if(r&&typeof r.then==='function')await r}
+     }else{
+       const req=g.requestFullscreen||g.webkitRequestFullscreen;
+       if(!req){if(s)s.textContent='このSafariでは全画面APIを利用できません。ホーム画面に追加して起動すると、ブラウザ表示を減らせます。';return}
+       const r=req.call(g);if(r&&typeof r.then==='function')await r;
+     }
+   }catch(err){
+     console.warn('fullscreen',err);
+     if(s)s.textContent='全画面表示を開始できませんでした。Safariの操作からもう一度お試しください。';
+   }
+   setTimeout(paintFS,60);
+ }
+ function apply(){
+   document.title='ぼくクエスト Ver.4.11.3';
+   document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.11.3');
+   const b=btn();if(b)b.onclick=toggleFS;
+   paintFS();
+ }
+ document.addEventListener('fullscreenchange',paintFS);
+ document.addEventListener('webkitfullscreenchange',paintFS);
+ window.addEventListener('resize',()=>{if(isFS())requestAnimationFrame(paintFS)});
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
 </script>

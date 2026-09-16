@@ -1011,7 +1011,9 @@ const kanaMap={
  'ぎゃ':['gya'],'ぎゅ':['gyu'],'ぎょ':['gyo'],
  'じゃ':['ja','jya','zya'],'じゅ':['ju','jyu','zyu'],'じょ':['jo','jyo','zyo'],
  'びゃ':['bya'],'びゅ':['byu'],'びょ':['byo'],
- 'ぴゃ':['pya'],'ぴゅ':['pyu'],'ぴょ':['pyo']
+ 'ぴゃ':['pya'],'ぴゅ':['pyu'],'ぴょ':['pyo'],
+ 'ぁ':['la','xa'],'ぃ':['li','xi'],'ぅ':['lu','xu'],'ぇ':['le','xe'],'ぉ':['lo','xo'],
+ 'ふぁ':['fa','fula','fuxa'],'ふぃ':['fi','fuli','fuxi'],'ふぇ':['fe','fule','fuxe'],'ふぉ':['fo','fulo','fuxo']
 };
 function tokenizeKana(word){
  const out=[];for(let i=0;i<word.length;i++){const two=word.slice(i,i+2);if(kanaMap[two]){out.push(two);i++}else out.push(word[i])}return out;
@@ -1025,11 +1027,8 @@ function romajiVariants(word){
      const prefixes=[...new Set(opts.map(o=>o[0]).filter(Boolean))];
      variants=variants.flatMap(v=>prefixes.map(p=>v+p)).slice(0,256);continue;
    }
-   /* Ver.4.11.1: Japanese long-vowel mark is typed by repeating the previous vowel.
-      Example: ぺーじ -> peeji. This keeps battle input on a-z keys only. */
-   if(t==='ー'){
-     variants=variants.map(v=>{const m=v.match(/[aeiou](?!.*[aeiou])/);return v+(m?m[0]:'')}).slice(0,256);continue;
-   }
+   /* Ver.4.11.2: type the Japanese long-vowel mark with the physical '-' key next to 0. */
+   if(t==='ー'){variants=variants.map(v=>v+'-').slice(0,256);continue;}
    const opts=kanaMap[t]||[t];
    variants=variants.flatMap(v=>opts.map(o=>v+o)).slice(0,256);
  }
@@ -1273,7 +1272,7 @@ function startHeroJobPreview(){stopHeroJobPreview();const img=$('#heroJobPortrai
 
 let battleTimeLeft=99,battleTimerHandle=null,battleStartedAt=0,battleFinishing=false,enemySpecial=0;
 function updateTimerUi(){const e=$('#battleTimer');if(e){e.textContent=battleTimeLeft;e.classList.toggle('danger',battleTimeLeft<=15)}}
-function stopBattleTimer(record=true){if(battleTimerHandle){clearInterval(battleTimerHandle);battleTimerHandle=null}if(record&&battleStartedAt){const s=Math.max(0,Math.round((Date.now()-battleStartedAt)/1000));updateMeta(m=>m.battleSeconds+=s)}battleStartedAt=0}
+function stopBattleTimer(record=true){stopBattleBgm4112();if(battleTimerHandle){clearInterval(battleTimerHandle);battleTimerHandle=null}if(record&&battleStartedAt){const s=Math.max(0,Math.round((Date.now()-battleStartedAt)/1000));updateMeta(m=>m.battleSeconds+=s)}battleStartedAt=0}
 function startBattleTimer(){stopBattleTimer(false);battleTimeLeft=99;battleStartedAt=Date.now();updateTimerUi();battleTimerHandle=setInterval(()=>{if(!$('#battle')?.classList.contains('active'))return;battleTimeLeft--;updateTimerUi();if(battleTimeLeft<=0)timeUpDeath()},1000)}
 function timeUpDeath(){if(battleFinishing)return;battleFinishing=true;stopBattleTimer(true);battleLocked=true;updateMeta(m=>{m.timeups++;m.losses++});state.hp=0;updateBattle();$('#timeUpBanner').classList.add('show');battleSay('タイムアップ！ '+stageInfo().enemy+'の いちげき！');enemyAttackEffect(Math.max(99,state.maxHp));if(state.job==='せんし')warriorDown();else if(state.job==='ゆうしゃ')heroDownMotion();setTimeout(()=>{$('#timeUpBanner').classList.remove('show');setupStats();openStageMap();battleFinishing=false},2400)}
 function derivedStats(lv){const b={せんし:[18,20,10,12],まほうつかい:[22,9,14,24],とうぞく:[17,11,24,15],ゆうしゃ:[19,16,16,18]}[state.job]||[19,16,16,18];return{hp:({せんし:38,まほうつかい:27,とうぞく:30,ゆうしゃ:33}[state.job]||33)+(lv-1)*5,atk:b[0]+(lv-1)*3,def:b[1]+(lv-1)*2,spd:b[2]+(lv-1)*2,word:b[3]+(lv-1)*3}}
@@ -1290,7 +1289,7 @@ function startBattle(){const st=stageInfo();battleFinishing=false;updateMeta(m=>
  heroEl.src=state.job==='せんし'?WARRIOR_MOTIONS.idle[0]:(state.job==='ゆうしゃ'?HERO_MOTIONS.idle[0]:LAYER_ASSETS.heroes[heroKey]);
  if(state.job==='せんし')setTimeout(warriorIdle,50); else if(state.job==='ゆうしゃ')setTimeout(heroIdleMotion,50);$('#enemyHpName').textContent=st.enemy;const ep=$('#enemyPortrait');
  const enemyArt=st.art || ((st.enemy.includes('コトバケ')||st.enemy.includes('メモリ'))?LAYER_ASSETS.slime:''); ep.dataset.stage=st.no; ep.classList.remove('enemyDefeated'); ep.style.opacity='';
- if(enemyArt){ep.src=enemyArt;ep.classList.add('show')}else{ep.classList.remove('show');ep.removeAttribute('src')}state.seen[dexId(st.enemy)]=true;updateBattle();battleSay('1文字ずつ こうげき！ 99秒以内に たおそう！');show('battle');startWhisperEnemyIdle();startBattleTimer();setTimeout(()=>$('#battleInput').focus({preventScroll:true}),100)}
+ if(enemyArt){ep.src=enemyArt;ep.classList.add('show')}else{ep.classList.remove('show');ep.removeAttribute('src')}state.seen[dexId(st.enemy)]=true;updateBattle();battleSay('1文字ずつ こうげき！ 99秒以内に たおそう！');show('battle');startWhisperEnemyIdle();startBattleTimer();startBattleBgm4112();playBattleStartSe4112();setTimeout(()=>$('#battleInput').focus({preventScroll:true}),100)}
 
 function activeTargets38(word,typed){
  const all=romajiVariants(word), matches=all.filter(x=>x.startsWith(typed));
@@ -1328,7 +1327,7 @@ function updateBattle(){const st=stageInfo();
 $('#heroHpText').textContent=`${state.hp}/${state.maxHp}`;$('#enemyHpText').textContent=`${state.enemyHp}/${state.enemyMax}`;$('#heroHp').style.width=(100*state.hp/state.maxHp)+'%';$('#enemyHp').style.width=(100*state.enemyHp/state.enemyMax)+'%';$('#promptKana').textContent=currentWord();paintTyped();$('#spFill').style.width=state.special+'%';const esf=document.querySelector('#battle .enemySpFill');if(esf)esf.style.setProperty('width',enemySpecial+'%','important');const ready=state.special>=100;$('#specialBtn').classList.toggle('specialReady',ready);$('#specialBtn').textContent=ready?'★ Space：ひっさつ OK！':'Space：ひっさつ'}
 function playerAttackEffect(dmg){stopWhisperEnemyIdle();setTimeout(startWhisperEnemyIdle,760);if(state.job==='せんし')warriorAttack();else if(state.job==='ゆうしゃ')heroAttackMotion();else retrigger($('#heroToken'),'heroAttack',500);retrigger($('#enemyPortrait'),'enemyDamage',460);retrigger($('#battleScene'),'sceneShake',380);richImpactFx();$('#enemyDamage').textContent=dmg;retrigger($('#enemyDamage'),'show',700);sfx('hit');richHitSfx();setTimeout(richAfterHitSfx,180)}
 function enemyAttackEffect(dmg){retrigger($('#enemyPortrait'),'enemyAttack',500);if(state.job==='せんし')warriorHurt();else if(state.job==='ゆうしゃ')heroHurtMotion();else retrigger($('#heroToken'),'heroDamage',460);retrigger($('#battleScene'),'sceneShake',380);$('#heroDamage').textContent=dmg;retrigger($('#heroDamage'),'show',700);sfx('hurt')}
-function battleChar(ch){if(battleLocked||battleFinishing||!/^[a-z]$/i.test(ch))return;ch=ch.toLowerCase();const w=currentWord(),next=battleTyped+ch;if(validPrefix(next,w)){if(pendingWordComplete){clearTimeout(pendingWordComplete);pendingWordComplete=null}battleTyped=next;battleWrong=false;state.special=Math.min(100,state.special+(state.mode==='hard'?3:4));const dmg=charDamageFor(w);state.enemyHp=Math.max(0,state.enemyHp-dmg);updateMeta(m=>m.correctChars++);sfx('type');charHitEffect(dmg);battleSay(`1文字ヒット！ ${dmg} ダメージ`);updateBattle();if(state.enemyHp<=0){battleLocked=true;setTimeout(win,160);return}maybeComplete38()}else{updateMeta(m=>m.wrongInputs++);battleWrong=true;state.combo=0;state.special=Math.max(0,state.special-10);enemySpecial=Math.min(100,enemySpecial+17);const normalDmg=state.mode==='hard'?6:Math.max(1,5-Math.floor(state.level/2)-(state.job==='せんし'?2:0));const enemySpecialReady=enemySpecial>=100;const dmg=enemySpecialReady?normalDmg+(state.mode==='hard'?4:3):normalDmg;state.hp=Math.max(0,state.hp-dmg);enemyAttackEffect(dmg);if(enemySpecialReady){retrigger($('#battleScene'),'heavyImpact31010',460);battleSay(`${stageInfo().enemy}の ひっさつ！ ${dmg} ダメージ！`)}else{battleSay(`${stageInfo().enemy}の こうげき！ ${dmg} ダメージ。つぎは「${nextExpected(battleTyped,w)||canonicalRomaji(w)[battleTyped.length]||''}」`)}updateBattle();battleLocked=true;if(enemySpecialReady)setTimeout(()=>{enemySpecial=0;updateBattle()},320);setTimeout(()=>{if(!battleFinishing){battleLocked=false;$('#battleInput').focus({preventScroll:true})}},enemySpecialReady?620:450);if(state.hp<=0){battleFinishing=true;stopBattleTimer(true);updateMeta(m=>m.losses++);if(state.job==='せんし')warriorDown();else if(state.job==='ゆうしゃ')heroDownMotion();battleSay('ちからつきた……');setTimeout(()=>{setupStats();openStageMap();battleFinishing=false},1500)}}}
+function battleChar(ch){if(battleLocked||battleFinishing||!/^[a-z-]$/i.test(ch))return;ch=ch.toLowerCase();const w=currentWord(),next=battleTyped+ch;if(validPrefix(next,w)){if(pendingWordComplete){clearTimeout(pendingWordComplete);pendingWordComplete=null}battleTyped=next;battleWrong=false;state.special=Math.min(100,state.special+(state.mode==='hard'?3:4));const dmg=charDamageFor(w);state.enemyHp=Math.max(0,state.enemyHp-dmg);updateMeta(m=>m.correctChars++);sfx('type');charHitEffect(dmg);battleSay(`1文字ヒット！ ${dmg} ダメージ`);updateBattle();if(state.enemyHp<=0){battleLocked=true;setTimeout(win,160);return}maybeComplete38()}else{updateMeta(m=>m.wrongInputs++);battleWrong=true;state.combo=0;state.special=Math.max(0,state.special-10);enemySpecial=Math.min(100,enemySpecial+17);const normalDmg=state.mode==='hard'?6:Math.max(1,5-Math.floor(state.level/2)-(state.job==='せんし'?2:0));const enemySpecialReady=enemySpecial>=100;const dmg=enemySpecialReady?normalDmg+(state.mode==='hard'?4:3):normalDmg;state.hp=Math.max(0,state.hp-dmg);enemyAttackEffect(dmg);if(enemySpecialReady){retrigger($('#battleScene'),'heavyImpact31010',460);battleSay(`${stageInfo().enemy}の ひっさつ！ ${dmg} ダメージ！`)}else{battleSay(`${stageInfo().enemy}の こうげき！ ${dmg} ダメージ。つぎは「${nextExpected(battleTyped,w)||canonicalRomaji(w)[battleTyped.length]||''}」`)}updateBattle();battleLocked=true;if(enemySpecialReady)setTimeout(()=>{enemySpecial=0;updateBattle()},320);setTimeout(()=>{if(!battleFinishing){battleLocked=false;$('#battleInput').focus({preventScroll:true})}},enemySpecialReady?620:450);if(state.hp<=0){battleFinishing=true;stopBattleTimer(true);updateMeta(m=>m.losses++);if(state.job==='せんし')warriorDown();else if(state.job==='ゆうしゃ')heroDownMotion();battleSay('ちからつきた……');setTimeout(()=>{setupStats();openStageMap();battleFinishing=false},1500)}}}
 function successAttack(){state.combo++;updateMeta(m=>{m.words++;m.bestCombo=Math.max(m.bestCombo,state.combo)});if(state.job==='せんし')warriorAttack();else if(state.job==='ゆうしゃ')heroAttackMotion();else retrigger($('#heroToken'),'heroAttack',500);battleSay('せいこう！');nextWord();battleTyped='';updateBattle();setTimeout(()=>{if(!battleFinishing){battleLocked=false;$('#battleInput').focus({preventScroll:true})}},140)}
 const specialByJob={せんし:{face:'⚔️',name:'れっかざん',mult:1.15},まほうつかい:{face:'🧙',name:'ことだまフレア',mult:1.35},とうぞく:{face:'🥷',name:'かげばしり',mult:1.22},ゆうしゃ:{face:'🛡️',name:'ことばのせんこう',mult:1.22}};
 function special(){
@@ -1347,7 +1346,7 @@ function special(){
  if(state.enemyHp<=0){setTimeout(win,state.job==='ゆうしゃ'?1900:800);return}
  setTimeout(()=>{battleLocked=false;$('#battleInput').focus({preventScroll:true})},state.job==='ゆうしゃ'?1850:820)
 }
-function win(){if(battleFinishing)return;battleFinishing=true;battleLocked=true;stopBattleTimer(true);const st=stageInfo(),id=dexId(st.enemy);state.kills[id]=(state.kills[id]||0)+1;state.seen[id]=true;const oldLevel=state.level;let leveled=false;if(state.mode==='normal'){state.xp+=15;if(state.xp>=30){state.xp-=30;state.level++;leveled=true;setupStats()}}const advanced=(state.selectedStage===state.stage&&state.stage<stages.length);if(advanced){state.stage++;state.selectedStage=state.stage}if(state.selectedStage===stages.length&&state.mode==='normal')state.normalCleared=true;updateMeta(m=>{m.wins++;if(advanced)m.stageClears++});stopWhisperEnemyIdle();const ep=$('#enemyPortrait');if(ep){ep.classList.remove('enemyDamage','enemyAttack');void ep.offsetWidth;ep.classList.add('enemyDefeated')}sfx('clear');save();battleSay(`${st.enemy}を たおした！`);if(state.job==='せんし')warriorVictory();else if(state.job==='ゆうしゃ')heroVictoryMotion();const finish=()=>{battleFinishing=false;openStageMap()};if(leveled)setTimeout(()=>showLevelUp(oldLevel,state.level,finish),650);else setTimeout(finish,1900)}
+function win(){if(battleFinishing)return;battleFinishing=true;battleLocked=true;stopBattleTimer(true);const st=stageInfo(),id=dexId(st.enemy);state.kills[id]=(state.kills[id]||0)+1;state.seen[id]=true;const oldLevel=state.level;let leveled=false;if(state.mode==='normal'){state.xp+=15;if(state.xp>=30){state.xp-=30;state.level++;leveled=true;setupStats()}}const advanced=(state.selectedStage===state.stage&&state.stage<stages.length);if(advanced){state.stage++;state.selectedStage=state.stage}if(state.selectedStage===stages.length&&state.mode==='normal')state.normalCleared=true;updateMeta(m=>{m.wins++;if(advanced)m.stageClears++});stopWhisperEnemyIdle();const ep=$('#enemyPortrait');if(ep){ep.classList.remove('enemyDamage','enemyAttack');void ep.offsetWidth;ep.classList.add('enemyDefeated')}sfx('clear');playVictoryFanfare4112();save();battleSay(`${st.enemy}を たおした！`);if(state.job==='せんし')warriorVictory();else if(state.job==='ゆうしゃ')heroVictoryMotion();const finish=()=>{battleFinishing=false;openStageMap()};if(leveled)setTimeout(()=>showLevelUp(oldLevel,state.level,finish),650);else setTimeout(finish,1900)}
 function backspaceBattle(){if(battleTyped){battleTyped=battleTyped.slice(0,-1);updateBattle()}}
 
 let practiceBag=[],practiceIndex=0,practiceTyped='';
@@ -1450,7 +1449,7 @@ document.addEventListener('keydown',e=>{
    else if(e.key==='ArrowDown'||e.key==='ArrowRight'){archiveIndex++;renderStoryArchive();e.preventDefault()}
    else if(e.key==='ArrowUp'||e.key==='ArrowLeft'){archiveIndex=Math.max(0,archiveIndex-1);renderStoryArchive();e.preventDefault()}
  }
- else if(id==='battle'){if(e.code==='Space'){e.preventDefault();special();return}if(e.key==='Backspace'){e.preventDefault();if(battleTyped)backspaceBattle();else{stopBattleTimer(false);openStageMap()}return}if(e.key==='Escape'){stopBattleTimer(false);openStageMap();return}if(/^[a-z]$/i.test(e.key)){lastPhysicalKeyAt=performance.now();e.preventDefault();battleChar(e.key);return}}
+ else if(id==='battle'){if(e.code==='Space'){e.preventDefault();special();return}if(e.key==='Backspace'){e.preventDefault();if(battleTyped)backspaceBattle();else{stopBattleTimer(false);openStageMap()}return}if(e.key==='Escape'){stopBattleTimer(false);openStageMap();return}if(/^[a-z]$/i.test(e.key)||e.key==='-'||e.key==='ー'){lastPhysicalKeyAt=performance.now();e.preventDefault();battleChar(e.key==='ー'?'-':e.key);return}}
  else if(id==='practice'){if(e.key==='Backspace'||e.key==='Escape'){e.preventDefault();show('title')}}
  else if(id==='bestiary'){if(e.key==='Backspace'||e.key==='Escape'){e.preventDefault();show('title')}else if(e.key==='ArrowRight'||e.key==='ArrowDown'){moveDex(1);e.preventDefault()}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){moveDex(-1);e.preventDefault()}}
 });
@@ -1907,4 +1906,84 @@ body{min-height:100dvh!important;padding:0!important}
   playHeroMotion('attack',{fps:11,onDone:heroIdleMotion});
  };
 })();
+</script>
+
+<style id="ver4112-battle-polish">
+/* Ver.4.11.2 — unified fighter baseline, flying-enemy lane, size tuning and center message */
+#battle #heroToken.heroSprite,#battle #heroToken.warriorAnimated{
+  bottom:14.5%!important;max-height:57%!important;
+}
+/* Ground monsters share the same visual floor line and stay above the typing panel. */
+#battle #enemyPortrait{bottom:14.5%!important;height:55%!important;object-position:center bottom!important}
+/* Floating/flying enemies occupy a consistent middle-air lane. */
+#battle #enemyPortrait[data-stage="2-1"],
+#battle #enemyPortrait[data-stage="3-2"],
+#battle #enemyPortrait[data-stage="4-1"],
+#battle #enemyPortrait[data-stage="4-2"]{bottom:25%!important;height:48%!important;object-position:center center!important}
+/* Requested per-monster scale changes. */
+#battle #enemyPortrait[data-stage="3-1"]{bottom:13.5%!important;height:76%!important;width:min(55%,555px)!important} /* 棍棒の巨蟲 ≈1.5x */
+#battle #enemyPortrait[data-stage="2-3"]{bottom:14%!important;height:70%!important;width:min(52%,518px)!important} /* 忘却の番人 ≈1.4x */
+#battle #enemyPortrait[data-stage="3-2"]{bottom:23%!important;height:62%!important;width:min(48%,480px)!important} /* グリフォン ≈1.3x */
+#battle #enemyPortrait[data-stage="3-3"]{bottom:14%!important;height:62%!important}
+/* The message/damage bar now lives directly under the timer in the open center lane. */
+#battle .battleMessage{
+  top:150px!important;bottom:auto!important;left:50%!important;right:auto!important;
+  transform:translateX(-50%)!important;width:min(430px,34vw)!important;min-height:34px!important;
+  padding:6px 14px!important;border-radius:17px!important;font-size:clamp(13px,1.35vw,18px)!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;z-index:26!important;
+}
+/* Damage numbers also rise in the center combat lane instead of touching the typing UI. */
+#battle .damage.heroD{left:30%!important;right:auto!important;top:31%!important;bottom:auto!important}
+#battle .damage.enemyD{right:30%!important;left:auto!important;top:31%!important;bottom:auto!important}
+@media(max-width:900px){
+ #battle #heroToken.heroSprite,#battle #heroToken.warriorAnimated{bottom:15%!important;max-height:55%!important}
+ #battle #enemyPortrait{bottom:15%!important;height:53%!important}
+ #battle #enemyPortrait[data-stage="2-1"],#battle #enemyPortrait[data-stage="4-1"],#battle #enemyPortrait[data-stage="4-2"]{bottom:25%!important;height:46%!important}
+ #battle #enemyPortrait[data-stage="3-1"]{bottom:14%!important;height:72%!important;width:min(56%,520px)!important}
+ #battle #enemyPortrait[data-stage="2-3"]{bottom:14.5%!important;height:67%!important;width:min(53%,500px)!important}
+ #battle #enemyPortrait[data-stage="3-2"]{bottom:23%!important;height:59%!important;width:min(49%,460px)!important}
+ #battle #enemyPortrait[data-stage="3-3"]{bottom:14.5%!important;height:59%!important}
+ #battle .battleMessage{top:132px!important;width:min(360px,36vw)!important;font-size:13px!important;padding:5px 10px!important}
+}
+</style>
+<script id="ver4112-gameplay-patch">
+(()=>{
+ const stamp=()=>{document.title='ぼくクエスト Ver.4.11.2';document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.11.2')};
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',stamp);else stamp();
+
+ /* Extra hit feedback: short knockback + blink, without changing the accepted sprite artwork. */
+ window.hitKnockback4112=(el,dir=1)=>{
+  if(!el||!el.animate)return;
+  try{el.animate([
+   {transform:'translateX(0)',opacity:1,offset:0},
+   {transform:`translateX(${22*dir}px)`,opacity:.22,offset:.18},
+   {transform:`translateX(${10*dir}px)`,opacity:1,offset:.34},
+   {transform:`translateX(${18*dir}px)`,opacity:.32,offset:.48},
+   {transform:'translateX(0)',opacity:1,offset:1}
+  ],{duration:330,easing:'ease-out'});}catch(e){}
+ };
+ const oldCharHit=window.charHitEffect;
+ window.charHitEffect=function(d){const r=oldCharHit?.apply(this,arguments);hitKnockback4112(document.getElementById('enemyPortrait'),1);return r};
+ const oldPlayerAttack=window.playerAttackEffect;
+ window.playerAttackEffect=function(d){const r=oldPlayerAttack?.apply(this,arguments);setTimeout(()=>hitKnockback4112(document.getElementById('enemyPortrait'),1),80);return r};
+ const oldEnemyAttack=window.enemyAttackEffect;
+ window.enemyAttackEffect=function(d){const r=oldEnemyAttack?.apply(this,arguments);setTimeout(()=>hitKnockback4112(document.getElementById('heroToken'),-1),60);return r};
+})();
+
+/* Lightweight procedural battle BGM / SE. No external audio files are required. */
+let bqBgm4112Timer=null,bqBgm4112Step=0,bqBgm4112Nodes=[];
+async function bqTone4112(freq,dur=.12,type='triangle',vol=.025,delay=0){
+ if(!state.sound)return;const ac=await ensureAudio();if(!ac)return;const t=ac.currentTime+delay,o=ac.createOscillator(),g=ac.createGain();
+ o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+ o.connect(g).connect(ac.destination);o.start(t);o.stop(t+dur+.03);bqBgm4112Nodes.push(o);o.onended=()=>{bqBgm4112Nodes=bqBgm4112Nodes.filter(x=>x!==o)};
+}
+function startBattleBgm4112(){
+ stopBattleBgm4112();if(!state.sound)return;bqBgm4112Step=0;
+ const bass=[110,110,130.81,146.83,110,164.81,146.83,130.81],lead=[440,523.25,659.25,523.25,493.88,587.33,659.25,587.33];
+ const tick=()=>{if(!document.getElementById('battle')?.classList.contains('active'))return;const i=bqBgm4112Step++%8;bqTone4112(bass[i],.22,'triangle',.018);if(i%2===0)bqTone4112(lead[i],.11,'sine',.012,.04)};
+ tick();bqBgm4112Timer=setInterval(tick,360);
+}
+function stopBattleBgm4112(){if(bqBgm4112Timer){clearInterval(bqBgm4112Timer);bqBgm4112Timer=null}bqBgm4112Nodes.forEach(n=>{try{n.stop()}catch(e){}});bqBgm4112Nodes=[]}
+function playBattleStartSe4112(){[392,523.25,659.25].forEach((f,i)=>bqTone4112(f,.10,'square',.035,i*.075))}
+function playVictoryFanfare4112(){stopBattleBgm4112();[523.25,659.25,783.99,1046.5].forEach((f,i)=>bqTone4112(f,.28,'triangle',.055,i*.12));setTimeout(()=>{[659.25,783.99,1046.5].forEach((f,i)=>bqTone4112(f,.42,'sine',.04,i*.035))},520)}
 </script>

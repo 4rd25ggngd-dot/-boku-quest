@@ -1025,6 +1025,11 @@ function romajiVariants(word){
      const prefixes=[...new Set(opts.map(o=>o[0]).filter(Boolean))];
      variants=variants.flatMap(v=>prefixes.map(p=>v+p)).slice(0,256);continue;
    }
+   /* Ver.4.11.1: Japanese long-vowel mark is typed by repeating the previous vowel.
+      Example: ぺーじ -> peeji. This keeps battle input on a-z keys only. */
+   if(t==='ー'){
+     variants=variants.map(v=>{const m=v.match(/[aeiou](?!.*[aeiou])/);return v+(m?m[0]:'')}).slice(0,256);continue;
+   }
    const opts=kanaMap[t]||[t];
    variants=variants.flatMap(v=>opts.map(o=>v+o)).slice(0,256);
  }
@@ -1878,3 +1883,28 @@ body{min-height:100dvh!important;padding:0!important}
 (()=>{const stamp=()=>{document.title='ぼくクエスト Ver.4.11';document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.11')};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',stamp);else stamp()})();
 </script>
 
+
+<style id="ver4111-final-fix">
+/* Ver.4.11.1 — slightly higher hero battle position */
+#battle #heroToken.heroSprite{bottom:12%!important}
+#battle #heroToken.warriorAnimated{bottom:12%!important}
+@media(max-width:900px){
+ #battle #heroToken.heroSprite,#battle #heroToken.warriorAnimated{bottom:12.5%!important}
+}
+</style>
+<script id="ver4111-final-patch">
+(()=>{
+ const stamp=()=>{
+  document.title='ぼくクエスト Ver.4.11.1';
+  document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.11.1');
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',stamp);else stamp();
+
+ /* Restore the previously approved six-frame Yuusha attack sequence embedded in HERO_MOTIONS.
+    It is used for both normal completed-word attacks and the post-cutin special attack. */
+ window.heroAttackMotion=function(){
+  if(!heroIsActive())return;
+  playHeroMotion('attack',{fps:11,onDone:heroIdleMotion});
+ };
+})();
+</script>

@@ -1906,7 +1906,116 @@ function richAfterHitSfx(){
  document.title='ぼくクエスト Ver.4.12.6';document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.12.6');
 })();
 </script>
-<script id='ver4126-stamp'>document.title='ぼくクエスト Ver.4.12.6';document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.12.6');</script></body>
+<script id='ver4126-stamp'>document.title='ぼくクエスト Ver.4.12.6';document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.12.6');</script>
+<!-- ===== Ver.4.12.7 mage motion / completion storm / reliable job cut-ins ===== -->
+<style id="ver4127-fixes">
+/* Mage: no extra wobble/step animations. Keep the feet as the scale origin. */
+#battle #heroToken.bq4127Mage{animation:none!important;transform-origin:50% 100%!important;object-fit:contain!important;object-position:center bottom!important;}
+#battle #heroToken.bq4127MageIdle,#battle #heroToken.bq4127MageVictory{transform:scale(1)!important;}
+#battle #heroToken.bq4127MageAttack{transform:scale(1.9)!important;}
+#battle #heroToken.bq4127MageSpecial{transform:scale(2)!important;}
+#battle #heroToken.bq4127MageDefeat{transform:scale(1.4)!important;}
+/* Force the approved mage/thief cut-ins above every battle layer. */
+#cutin.bq4127ForceCutin{z-index:9999!important;position:fixed!important;inset:0!important;place-items:center!important;background:rgba(0,0,0,.86)!important;pointer-events:none!important;}
+#cutin.bq4127ForceCutin .cutinCard{width:min(96vw,1500px)!important;aspect-ratio:1776/427!important;padding:0!important;border:0!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;box-shadow:0 0 48px rgba(110,220,255,.75)!important;}
+#cutin.bq4127ForceCutin .cutinFace,#cutin.bq4127ForceCutin .cutinName,#cutin.bq4127ForceCutin #cutinSub{display:none!important;}
+</style>
+<script id="ver4127-runtime">
+(()=>{
+ const hero=()=>document.getElementById('heroToken');
+ const inBattle=()=>document.getElementById('battle')?.classList.contains('active');
+ const mage=()=>state?.job==='まほうつかい'&&inBattle();
+ let mageScaleTimer=0, cutTimer=0;
+ const mageClasses=['bq4127MageIdle','bq4127MageAttack','bq4127MageSpecial','bq4127MageVictory','bq4127MageDefeat'];
+ function magePose(kind,ms=0){
+   if(!mage())return;
+   const el=hero();if(!el)return;
+   if(mageScaleTimer){clearTimeout(mageScaleTimer);mageScaleTimer=0}
+   el.classList.add('bq4127Mage');el.classList.remove(...mageClasses,'heroAttack','bq4121MageStationary');
+   el.classList.add('bq4127Mage'+kind);
+   if(ms)mageScaleTimer=setTimeout(()=>magePose('Idle'),ms);
+ }
+ window.bq4127MagePose=magePose;
+
+ // Battle entry: idle is the reference size (1.0), with no added floating/wobble animation.
+ const startPrev=window.startBattle;
+ if(typeof startPrev==='function')window.startBattle=function(...a){const r=startPrev.apply(this,a);setTimeout(()=>{if(mage())magePose('Idle')},130);return r};
+
+ // Suppress every legacy per-character mage lightning hook without changing normal hit feedback.
+ const charPrev=window.charHitEffect;
+ if(typeof charPrev==='function')window.charHitEffect=function(...a){
+   if(state?.job!=='まほうつかい')return charPrev.apply(this,a);
+   const job=state.job;state.job='__mage_no_per_char_storm__';
+   try{return charPrev.apply(this,a)}finally{state.job=job}
+ };
+
+ // A full correct sentence: attack at 1.9x + exactly one lightning storm.
+ const successPrev=window.successAttack;
+ if(typeof successPrev==='function')window.successAttack=function(...a){
+   const isMage=state?.job==='まほうつかい';
+   const r=successPrev.apply(this,a);
+   if(isMage){magePose('Attack',980);setTimeout(()=>window.bq4122MageStorm?.(false),35)}
+   return r;
+ };
+
+ // Victory/defeat requested scale values.
+ const winPrev=window.win;
+ if(typeof winPrev==='function')window.win=function(...a){const isMage=state?.job==='まほうつかい';const r=winPrev.apply(this,a);if(isMage)setTimeout(()=>magePose('Victory'),45);return r};
+ const enemyPrev=window.enemyAttackEffect;
+ if(typeof enemyPrev==='function')window.enemyAttackEffect=function(...a){const isMage=state?.job==='まほうつかい';const r=enemyPrev.apply(this,a);if(isMage&&state.hp<=0)setTimeout(()=>magePose('Defeat'),45);return r};
+
+ function forceJobCutin(job){
+   const cut=document.getElementById('cutin'),card=cut?.querySelector('.cutinCard');if(!cut||!card)return;
+   if(cutTimer){clearTimeout(cutTimer);cutTimer=0}
+   cut.classList.remove('heroImageCutin','bq4124MageCutin','bq4124ThiefCutin','bq4122MageCutin','bq4122ThiefCutin','bq4125WarriorCutin','show');
+   cut.classList.add('bq4127ForceCutin',job==='まほうつかい'?'bq4122MageCutin':'bq4122ThiefCutin');
+   void cut.offsetWidth;
+   cut.classList.add('show');
+   cut.style.setProperty('display','grid','important');cut.style.setProperty('opacity','1','important');
+   cutTimer=setTimeout(()=>{
+     cut.classList.remove('show','bq4127ForceCutin','bq4122MageCutin','bq4122ThiefCutin');
+     cut.style.removeProperty('display');cut.style.removeProperty('opacity');
+   },1200);
+ }
+
+ // Final special handler for mage/thief. Warrior and Hero continue through the existing handlers.
+ const specialPrev=window.special;
+ window.special=function(){
+   const job=state?.job;
+   if(!['まほうつかい','とうぞく'].includes(job))return specialPrev.apply(this,arguments);
+   if(battleLocked||battleFinishing||state.special<100)return;
+   const isMage=job==='まほうつかい',name=isMage?'フレイムバースト':'トリプルショット',mult=isMage?1.35:1.22;
+   const dmg=Math.round((state.mode==='hard'?18:20+state.level*3)*mult);
+   state.special=0;state.enemyHp=Math.max(0,state.enemyHp-dmg);battleLocked=true;updateBattle();
+   forceJobCutin(job);sfx?.('special');battleSay?.(`ひっさつ！ ${name}！ ${dmg} ダメージ！`);
+   setTimeout(()=>{
+     if(isMage)magePose('Special',1180);
+     // Reuse the already embedded approved special GIFs through the 4.12 motion runtime.
+     const pack=window.BQ412;
+     if(isMage||job==='とうぞく'){
+       // Existing special runtime owns the embedded special assets; trigger its visual by calling the preserved handler
+       // is intentionally avoided here to prevent double damage. Locate the asset from the previous special script via current page helpers.
+       const el=hero();
+       const scripts=[...document.scripts].map(s=>s.textContent).join('\n');
+       const key=isMage?'mageSpecial':'thiefSpecial';
+       const m=scripts.match(new RegExp(key+":\\s*'([^']+)'"));
+       if(m&&el)el.src=m[1]+'#bq4127-special-'+Date.now();
+     }
+     retrigger?.(document.getElementById('enemyPortrait'),'enemyDamage',760);retrigger?.(document.getElementById('battleScene'),'sceneShake',isMage?620:480);
+     if(isMage)window.bq4122MageStorm?.(true);else richImpactFx?.();
+     const de=document.getElementById('enemyDamage');if(de){de.textContent=dmg;retrigger?.(de,'show',850)}
+     sfx?.('hit');richHitSfx?.();setTimeout(()=>richAfterHitSfx?.(),180);
+   },1080);
+   if(state.enemyHp<=0)setTimeout(()=>win(),2250);
+   else setTimeout(()=>{if(isMage)magePose('Idle');battleLocked=false;updateBattle();document.getElementById('battleInput')?.blur()},2300);
+ };
+
+ document.title='ぼくクエスト Ver.4.12.7';
+ document.querySelectorAll('.subtitle small').forEach(e=>e.textContent='Ver.4.12.7');
+})();
+</script>
+
+</body>
 </html><style id="ver48-modern-polish">
 /* Ver.4.8 modern title / name entry / larger battle portrait */
 #title{background:radial-gradient(circle at 50% 28%,#173657 0,#071421 42%,#02070d 78%)}
